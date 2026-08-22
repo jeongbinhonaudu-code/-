@@ -5,12 +5,11 @@ import { sampleQualityInspections } from "@/data/qualityInspections";
 import { sampleTravelers } from "@/data/travelers";
 import { QualityInspection, Traveler } from "@/types";
 import { useEffectiveEquipment } from "@/lib/equipmentOverrides";
-import { getZonesByFactory } from "@/data/zones";
+import { zones as allZones } from "@/data/zones";
 import { downloadCsv } from "@/lib/csv";
 import { formatDateTime } from "@/lib/format";
 import { Download, Printer } from "lucide-react";
 
-const allZones = [...getZonesByFactory("factory1"), ...getZonesByFactory("factory2")];
 function zoneName(zoneId: string) {
   return allZones.find((z) => z.id === zoneId)?.name ?? zoneId;
 }

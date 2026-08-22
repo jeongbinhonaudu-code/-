@@ -5,7 +5,6 @@ import { QualityInspection } from "@/types";
 export const sampleQualityInspections: QualityInspection[] = [
   {
     id: "qi-sample-1",
-    factoryId: "factory1",
     zoneId: "f1-clg-centerless",
     equipmentId: "eq-clg-1",
     product: "예시) 8164",
@@ -22,7 +21,6 @@ export const sampleQualityInspections: QualityInspection[] = [
   },
   {
     id: "qi-sample-2",
-    factoryId: "factory1",
     zoneId: "f1-semi-auto-grinding",
     equipmentId: "eq-semi-auto-grinding-3",
     product: "예시) H32C",
@@ -39,7 +37,6 @@ export const sampleQualityInspections: QualityInspection[] = [
   },
   {
     id: "qi-sample-3",
-    factoryId: "factory1",
     zoneId: "f1-pt-buffing",
     equipmentId: "eq-pt-table",
     product: "예시) H3240",
@@ -56,7 +53,6 @@ export const sampleQualityInspections: QualityInspection[] = [
   },
   {
     id: "qi-sample-4",
-    factoryId: "factory1",
     zoneId: "f1-auto-ut",
     equipmentId: "eq-auto-ut-1",
     product: "예시) H2533",
@@ -71,7 +67,6 @@ export const sampleQualityInspections: QualityInspection[] = [
   },
   {
     id: "qi-sample-5",
-    factoryId: "factory1",
     zoneId: "f1-mt",
     equipmentId: "eq-mt-1",
     product: "예시) H2533",

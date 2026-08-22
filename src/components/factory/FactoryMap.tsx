@@ -6,13 +6,13 @@ import { getByZone, getZoneStatus, useEffectiveEquipment } from "@/lib/equipment
 import { GRINDING_LINE_IDS } from "@/data/zones";
 import { ZONE_CATEGORY_STYLE } from "@/lib/zoneStyle";
 import { QUALITY_RESULT_LABEL, STATUS_LABEL } from "@/lib/labels";
-import { zoneTopCenterPct } from "@/lib/gridGeometry";
+import { GRID_COLS, GRID_ROWS, zoneTopCenterPct } from "@/lib/gridGeometry";
 import { StatusDot } from "@/components/ui/StatusBadge";
 import { EquipmentPanel } from "@/components/factory/EquipmentPanel";
-import { ArrowRight, Camera, ImageOff } from "lucide-react";
+import { ArrowRight, ArrowUpDown, Camera, HelpCircle } from "lucide-react";
 import clsx from "clsx";
 
-export function FactoryMap({ factoryId, zones }: { factoryId: "factory1" | "factory2"; zones: FactoryZone[] }) {
+export function FactoryMap({ zones }: { zones: FactoryZone[] }) {
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
   const { equipment, updateEquipment } = useEffectiveEquipment();
 
@@ -24,43 +24,27 @@ export function FactoryMap({ factoryId, zones }: { factoryId: "factory1" | "fact
     return line.map((z) => zoneTopCenterPct(z.gridColumn, z.gridRow));
   }, [zones]);
 
-  if (zones.length === 0) {
-    return (
-      <div className="flex min-h-[320px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-white p-10 text-center">
-        <ImageOff className="mb-3 text-slate-400" size={32} />
-        <p className="font-semibold text-slate-600">2공장 배치 정보 · 입력 필요</p>
-        <p className="mt-1 max-w-md text-sm text-slate-400">
-          아직 2공장의 실제 설비 배치 정보가 등록되지 않았습니다. 실제 도면·설비 목록을 확보한 뒤 관리자가 등록할 수 있습니다.
-        </p>
-      </div>
-    );
-  }
-
   const selectedZone = zones.find((z) => z.id === selectedZoneId) ?? null;
 
   return (
     <div className="relative">
       <div
         className="relative w-full overflow-hidden rounded-2xl border border-slate-700 bg-gradient-to-br from-[#0c1f3f] to-[#0a1730] shadow-2xl"
-        style={{ aspectRatio: "16 / 11" }}
+        style={{ aspectRatio: `${GRID_COLS} / ${GRID_ROWS}` }}
       >
         {/* 격자 바닥 텍스처 */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
+          className="pointer-events-none absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage:
               "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
-            backgroundSize: "8.333% 10%",
+            backgroundSize: `${100 / GRID_COLS}% ${100 / GRID_ROWS}%`,
           }}
         />
 
-        <div className="pointer-events-none absolute right-3 top-3 z-10 rounded-md bg-black/40 px-2 py-1 text-[11px] font-bold text-sky-300">
-          {factoryId === "factory1" ? "1공장" : "2공장"}
-        </div>
-
         <div
           className="relative grid h-full w-full gap-1.5 p-2 sm:gap-2 sm:p-3"
-          style={{ gridTemplateColumns: "repeat(12, 1fr)", gridTemplateRows: "repeat(10, 1fr)" }}
+          style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`, gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)` }}
         >
           {zones.map((zone) => (
             <ZoneCard key={zone.id} zone={zone} equipmentList={equipment} onSelect={() => setSelectedZoneId(zone.id)} />
@@ -80,11 +64,11 @@ export function FactoryMap({ factoryId, zones }: { factoryId: "factory1" | "fact
               </marker>
             </defs>
             <polyline
-              points={grindingArrowPath.map((p) => `${p.x},${p.y - 0.6}`).join(" ")}
+              points={grindingArrowPath.map((p) => `${p.x},${p.y - 0.3}`).join(" ")}
               fill="none"
               stroke="#fbbf24"
-              strokeWidth="0.5"
-              strokeDasharray="2 1.5"
+              strokeWidth="0.35"
+              strokeDasharray="1.4 1"
               markerEnd="url(#arrowhead)"
               vectorEffect="non-scaling-stroke"
             />
@@ -133,9 +117,12 @@ function ZoneCard({
     return (
       <div
         style={{ gridColumn: zone.gridColumn, gridRow: zone.gridRow }}
-        className="flex items-center justify-end pr-2 text-[10px] text-slate-400"
+        className="relative flex flex-col items-center justify-center gap-1 rounded-md border-x-2 border-dashed border-amber-400/70 bg-slate-700/20"
       >
-        <span className="truncate rounded bg-black/30 px-1.5 py-0.5">{zone.name}</span>
+        <ArrowUpDown size={14} className="text-amber-300/80" />
+        <span className="rotate-90 whitespace-nowrap text-[9px] font-semibold tracking-wide text-amber-200/70 sm:rotate-0">
+          {zone.name}
+        </span>
       </div>
     );
   }
@@ -154,8 +141,13 @@ function ZoneCard({
       )}
     >
       <div className="flex items-start justify-between gap-1">
-        <span className="text-[11px] font-bold leading-tight text-white sm:text-xs">{zone.name}</span>
-        <StatusDot status={status} />
+        <span className="text-[10px] font-bold leading-tight text-white sm:text-[11px]">{zone.name}</span>
+        <div className="flex shrink-0 items-center gap-1">
+          {zone.needsVerification && (
+            <HelpCircle size={11} className="text-yellow-400" aria-label="확인 필요" />
+          )}
+          <StatusDot status={status} />
+        </div>
       </div>
       {equipment.length > 0 && (
         <span className="hidden text-[10px] text-slate-300 sm:block">{equipment.length}개 설비</span>
@@ -199,6 +191,9 @@ function MapLegend() {
       ))}
       <span className="flex items-center gap-1.5 text-slate-600">
         <span className="h-2.5 w-2.5 rounded-full ring-2 ring-red-500" /> 문제 설비 강조
+      </span>
+      <span className="flex items-center gap-1 text-yellow-600">
+        <HelpCircle size={12} /> 도면 판독 확인 필요
       </span>
       <span className="flex items-center gap-1 text-amber-600">
         <ArrowRight size={12} /> 연결 설비라인: 반자동 원통연마 → CNC 원통연마 → CLG 센터리스

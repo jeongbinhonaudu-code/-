@@ -2,14 +2,13 @@
 
 import { useMemo, useState } from "react";
 import { useEffectiveEquipment } from "@/lib/equipmentOverrides";
-import { getZonesByFactory } from "@/data/zones";
+import { zones as allZones } from "@/data/zones";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { QualityResultBadge } from "@/components/ui/QualityResultBadge";
 import { downloadCsv } from "@/lib/csv";
 import { formatDateTime } from "@/lib/format";
 import { Download, Search } from "lucide-react";
 
-const allZones = [...getZonesByFactory("factory1"), ...getZonesByFactory("factory2")];
 function zoneName(zoneId: string) {
   return allZones.find((z) => z.id === zoneId)?.name ?? zoneId;
 }

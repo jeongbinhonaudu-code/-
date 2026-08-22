@@ -8,8 +8,7 @@ import { Factory, Menu, X, ChevronDown } from "lucide-react";
 
 const primaryLinks = [
   { href: "/", label: "대시보드" },
-  { href: "/factory/1", label: "1공장" },
-  { href: "/factory/2", label: "2공장" },
+  { href: "/factory", label: "공장 조감도" },
   { href: "/quality", label: "품질 순회점검" },
   { href: "/travelers", label: "트레블러 관리" },
   { href: "/analysis", label: "생산 분석" },

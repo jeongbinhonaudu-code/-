@@ -16,8 +16,6 @@ export type EquipmentStatus =
   | "waiting" // 작업 대기 (회색)
   | "neutral"; // 일반 구역 (파란색/중립)
 
-export type FactoryId = "factory1" | "factory2";
-
 export interface EquipmentPhoto {
   id: string;
   url: string;
@@ -58,7 +56,6 @@ export interface EquipmentOverride {
 
 export interface FactoryZone {
   id: string;
-  factoryId: FactoryId;
   name: string;
   category:
     | "warehouse" // 창고
@@ -75,18 +72,25 @@ export interface FactoryZone {
     | "sample_reagent" // 시편·시약
     | "mt" // 자분탐상
     | "corridor" // 통로
-    | "gate"; // 출입구
-  // CSS grid 기반 좌표 (12 컬럼 x 10 로우 스키마 형식 배치도)
+    | "gate" // 출입구/연결로
+    | "material" // 소재 보관
+    | "forging" // 단조
+    | "heat_treatment" // 열처리
+    | "welding" // 용접
+    | "lathe" // 선반(LH 시리즈)
+    | "machining" // 절단·CNC·MCT 가공
+    | "logistics"; // 대차·기준 보관 등 물류
+  // CSS grid 기반 좌표 (통합 조감도 스키마 배치도)
   gridColumn: string; // e.g. "1 / 3"
   gridRow: string; // e.g. "1 / 4"
   statusColorHint?: EquipmentStatus;
   description?: string;
   linkedLine?: string; // 연결된 설비라인 그룹 id (예: 원통연마 라인)
+  needsVerification?: boolean; // 도면 판독이 불확실해 확인 필요한 구역명
 }
 
 export interface QualityInspection {
   id: string;
-  factoryId: FactoryId;
   zoneId: string;
   equipmentId?: string;
   product?: string;

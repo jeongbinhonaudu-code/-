@@ -16,4 +16,11 @@ export const ZONE_CATEGORY_STYLE: Record<FactoryZone["category"], { bg: string; 
   mt: { bg: "bg-emerald-950/40", accent: "border-emerald-400/60", label: "MT" },
   corridor: { bg: "bg-slate-800/30", accent: "border-transparent", label: "통로" },
   gate: { bg: "bg-slate-800/20", accent: "border-transparent", label: "출입구" },
+  material: { bg: "bg-amber-950/40", accent: "border-amber-400/60", label: "소재" },
+  forging: { bg: "bg-rose-950/40", accent: "border-rose-400/60", label: "단조" },
+  heat_treatment: { bg: "bg-red-950/40", accent: "border-red-400/60", label: "열처리" },
+  welding: { bg: "bg-orange-950/40", accent: "border-orange-400/60", label: "용접" },
+  lathe: { bg: "bg-indigo-950/40", accent: "border-indigo-400/50", label: "선반" },
+  machining: { bg: "bg-cyan-950/40", accent: "border-cyan-400/50", label: "가공" },
+  logistics: { bg: "bg-stone-800/40", accent: "border-stone-400/50", label: "물류" },
 };

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { FactoryId, QualityInspection } from "@/types";
-import { factory1Zones, factory2Zones } from "@/data/zones";
+import { QualityInspection } from "@/types";
+import { zones } from "@/data/zones";
 import { equipmentList } from "@/data/equipment";
 import { INSPECTION_TYPE_OPTIONS } from "@/data/qualityInspections";
 import { X } from "lucide-react";
@@ -21,18 +21,15 @@ function nowLocalInput() {
 
 export function InspectionForm({
   onSubmit,
-  defaultFactoryId,
   defaultZoneId,
   defaultEquipmentId,
   defaultProduct,
 }: {
   onSubmit: (inspection: QualityInspection) => void;
-  defaultFactoryId?: FactoryId;
   defaultZoneId?: string;
   defaultEquipmentId?: string;
   defaultProduct?: string;
 }) {
-  const [factoryId, setFactoryId] = useState<FactoryId>(defaultFactoryId ?? "factory1");
   const [zoneId, setZoneId] = useState(defaultZoneId ?? "");
   const [equipmentId, setEquipmentId] = useState(defaultEquipmentId ?? "");
   const [product, setProduct] = useState(defaultProduct ?? "");
@@ -46,7 +43,6 @@ export function InspectionForm({
   const [followUpAction, setFollowUpAction] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
 
-  const zones = factoryId === "factory1" ? factory1Zones : factory2Zones;
   const zoneEquipment = equipmentList.filter((e) => e.zoneId === zoneId);
 
   function toggleType(t: string) {
@@ -67,7 +63,6 @@ export function InspectionForm({
 
     const inspection: QualityInspection = {
       id: `qi-${Date.now()}`,
-      factoryId,
       zoneId,
       equipmentId: equipmentId || undefined,
       product: product || undefined,
@@ -107,20 +102,6 @@ export function InspectionForm({
       )}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Field label="점검공장">
-          <select
-            className="input"
-            value={factoryId}
-            onChange={(e) => {
-              setFactoryId(e.target.value as FactoryId);
-              setZoneId("");
-              setEquipmentId("");
-            }}
-          >
-            <option value="factory1">1공장</option>
-            <option value="factory2">2공장</option>
-          </select>
-        </Field>
         <Field label="점검구역">
           <select
             className="input"

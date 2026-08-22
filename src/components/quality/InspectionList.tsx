@@ -2,15 +2,14 @@
 
 import { useMemo, useState } from "react";
 import { QualityInspection } from "@/types";
-import { getZonesByFactory } from "@/data/zones";
+import { zones } from "@/data/zones";
 import { QualityResultBadge } from "@/components/ui/QualityResultBadge";
 import { DataBadge } from "@/components/ui/DataBadge";
 import { Search } from "lucide-react";
 import { formatDateTime } from "@/lib/format";
 
 function zoneName(zoneId: string) {
-  const zone = [...getZonesByFactory("factory1"), ...getZonesByFactory("factory2")].find((z) => z.id === zoneId);
-  return zone?.name ?? zoneId;
+  return zones.find((z) => z.id === zoneId)?.name ?? zoneId;
 }
 
 export function InspectionList({ inspections }: { inspections: QualityInspection[] }) {

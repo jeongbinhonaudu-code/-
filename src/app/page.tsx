@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SummaryBar } from "@/components/layout/SummaryBar";
 import { FactoryMap } from "@/components/factory/FactoryMap";
-import { factory1Zones } from "@/data/zones";
+import { zones } from "@/data/zones";
 import { DataBadge } from "@/components/ui/DataBadge";
 
 export default function DashboardPage() {
@@ -9,14 +9,13 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-[1600px] px-3 py-4 sm:px-4 sm:py-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">1공장 실시간 조감도</h1>
+          <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">공장 실시간 조감도</h1>
           <p className="mt-1 text-sm text-slate-500">
             설비 위치·현재 작업제품·생산수량·설비상태·품질점검 결과를 하나의 화면에서 확인합니다.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <QuickLink href="/factory/1" label="1공장" active />
-          <QuickLink href="/factory/2" label="2공장" />
+          <QuickLink href="/factory" label="공장 조감도" active />
           <QuickLink href="/analysis?tab=past" label="과거 기준" />
           <QuickLink href="/analysis" label="생산 분석" />
           <QuickLink href="/simulation" label="시뮬레이션" accent />
@@ -34,7 +33,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-3">
-        <FactoryMap factoryId="factory1" zones={factory1Zones} />
+        <FactoryMap zones={zones} />
       </div>
     </div>
   );

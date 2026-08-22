@@ -1,5 +1,5 @@
 export const GRID_COLS = 12;
-export const GRID_ROWS = 10;
+export const GRID_ROWS = 24;
 
 function parseSpan(span: string): [number, number] {
   const [a, b] = span.split("/").map((s) => parseInt(s.trim(), 10));

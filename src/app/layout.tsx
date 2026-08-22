@@ -4,7 +4,7 @@ import { TopNav } from "@/components/layout/TopNav";
 
 export const metadata: Metadata = {
   title: "공정·품질 통합 관리 시스템",
-  description: "1공장 실시간 조감도 기반 제조공정·품질 통합 관리 웹 애플리케이션",
+  description: "공장 실시간 통합 조감도 기반 제조공정·품질 통합 관리 웹 애플리케이션",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

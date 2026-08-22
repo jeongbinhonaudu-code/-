@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffectiveEquipment } from "@/lib/equipmentOverrides";
-import { getZonesByFactory } from "@/data/zones";
+import { zones as allZones } from "@/data/zones";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { DataBadge } from "@/components/ui/DataBadge";
 import { classifyCustomer } from "@/lib/classify";
 
-const allZones = [...getZonesByFactory("factory1"), ...getZonesByFactory("factory2")];
 function zoneName(zoneId: string) {
   return allZones.find((z) => z.id === zoneId)?.name ?? zoneId;
 }
@@ -31,7 +30,7 @@ export default function ProductsPage() {
 
       {byProduct.size === 0 ? (
         <p className="mt-6 rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-400">
-          진행 중인 제품이 없습니다. 1공장 조감도에서 설비를 선택해 현재제품을 입력하세요.
+          진행 중인 제품이 없습니다. 공장 조감도에서 설비를 선택해 현재제품을 입력하세요.
         </p>
       ) : (
         <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">

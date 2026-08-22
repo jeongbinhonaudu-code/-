@@ -1,4 +1,4 @@
-import { factory1Zones, factory2Zones } from "@/data/zones";
+import { zones } from "@/data/zones";
 import { equipmentList } from "@/data/equipment";
 import { INSPECTION_TYPE_OPTIONS } from "@/data/qualityInspections";
 import { CLASSIFICATION_RULES_TEXT } from "@/lib/classify";
@@ -11,9 +11,9 @@ export default function MasterDataPage() {
 
       <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
         <section className="rounded-xl border border-slate-200 bg-white p-4">
-          <h2 className="mb-2 text-sm font-bold text-slate-800">구역 목록 (1공장 {factory1Zones.length}개 · 2공장 {factory2Zones.length}개)</h2>
+          <h2 className="mb-2 text-sm font-bold text-slate-800">구역 목록 (전체 {zones.length}개)</h2>
           <ul className="max-h-72 space-y-1 overflow-y-auto text-xs text-slate-600">
-            {factory1Zones.map((z) => (
+            {zones.map((z) => (
               <li key={z.id} className="flex items-center justify-between rounded bg-slate-50 px-2 py-1.5">
                 <span>{z.name}</span>
                 <span className="text-[10px] text-slate-400">{z.category}</span>
