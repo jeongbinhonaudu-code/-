@@ -21,9 +21,9 @@ export function ProductMaterialChart({ travelers }: { travelers: Traveler[] }) {
   });
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
       <div className="mb-1 flex items-center gap-2">
-        <h2 className="text-sm font-bold text-slate-800">제품·재질별 구성</h2>
+        <h2 className="text-sm font-bold text-slate-200">제품·재질별 구성</h2>
         <DataBadge reliability="unverified" />
       </div>
       <p className="mb-3 text-[11px] text-slate-400">등록 트레블러 기준 제품 종류 {productCounts.size}종 · 재질 {materialCounts.size}종</p>
@@ -33,10 +33,14 @@ export function ProductMaterialChart({ travelers }: { travelers: Traveler[] }) {
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} layout="vertical" margin={{ left: 12, right: 12 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11 }} />
-              <YAxis type="category" dataKey="name" width={90} tick={{ fontSize: 11 }} />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" stroke="#243456" />
+              <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fill: "#94a3b8" }} />
+              <YAxis type="category" dataKey="name" width={90} tick={{ fontSize: 11, fill: "#94a3b8" }} />
+              <Tooltip
+                contentStyle={{ background: "#101c33", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8 }}
+                labelStyle={{ color: "#e2e8f0" }}
+                itemStyle={{ color: "#e2e8f0" }}
+              />
               <Bar dataKey="count" fill="#0ea5e9" radius={[0, 6, 6, 0]} />
             </BarChart>
           </ResponsiveContainer>

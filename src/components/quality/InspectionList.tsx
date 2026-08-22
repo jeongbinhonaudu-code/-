@@ -48,7 +48,7 @@ export function InspectionList({ inspections }: { inspections: QualityInspection
   return (
     <div className="space-y-3">
       {repeatIssueZones.length > 0 && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700">
+        <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
           <p className="font-bold">동일 구역 반복 이상 감지</p>
           <p className="mt-1">
             {repeatIssueZones.map(([zoneId, c]) => `${zoneName(zoneId)}(${c}회)`).join(", ")} — 원인 확인이 필요합니다.
@@ -56,34 +56,34 @@ export function InspectionList({ inspections }: { inspections: QualityInspection
         </div>
       )}
 
-      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-white p-3">
-        <div className="flex flex-1 min-w-[180px] items-center gap-1.5 rounded-lg border border-slate-200 px-2 py-1.5">
-          <Search size={14} className="text-slate-400" />
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-[#101c33] p-3">
+        <div className="flex flex-1 min-w-[180px] items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2 py-1.5">
+          <Search size={14} className="text-slate-500" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="제품·트레블러·점검자·구역 검색"
-            className="w-full text-xs outline-none"
+            className="w-full bg-transparent text-xs text-slate-200 placeholder:text-slate-500 outline-none"
           />
         </div>
         <select
           value={resultFilter}
           onChange={(e) => setResultFilter(e.target.value)}
-          className="rounded-lg border border-slate-200 px-2 py-1.5 text-xs"
+          className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-xs text-slate-200"
         >
           <option value="all">전체 결과</option>
           <option value="ok">이상 없음</option>
           <option value="recheck">재확인 필요</option>
           <option value="nonconforming">부적합</option>
         </select>
-        <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="rounded-lg border border-slate-200 px-2 py-1.5 text-xs" />
+        <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-xs text-slate-200" />
         <span className="text-xs text-slate-400">~</span>
-        <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="rounded-lg border border-slate-200 px-2 py-1.5 text-xs" />
+        <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-xs text-slate-200" />
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <div className="overflow-x-auto rounded-xl border border-white/10 bg-[#101c33]">
         <table className="w-full min-w-[900px] text-xs">
-          <thead className="sticky top-0 bg-slate-50 text-slate-500">
+          <thead className="sticky top-0 bg-white/5 text-slate-400">
             <tr>
               <Th>점검시각</Th>
               <Th>구역</Th>
@@ -97,7 +97,7 @@ export function InspectionList({ inspections }: { inspections: QualityInspection
               <Th>신뢰성</Th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-white/5">
             {filtered.length === 0 && (
               <tr>
                 <td colSpan={10} className="px-3 py-8 text-center text-slate-400">
@@ -106,9 +106,9 @@ export function InspectionList({ inspections }: { inspections: QualityInspection
               </tr>
             )}
             {filtered.map((i) => (
-              <tr key={i.id} className={i.result === "nonconforming" ? "bg-red-50/60" : i.result === "recheck" ? "bg-orange-50/60" : ""}>
-                <td className="whitespace-nowrap px-3 py-2 text-slate-500">{formatDateTime(i.inspectedAt)}</td>
-                <td className="whitespace-nowrap px-3 py-2 font-medium text-slate-700">{zoneName(i.zoneId)}</td>
+              <tr key={i.id} className={i.result === "nonconforming" ? "bg-red-500/10" : i.result === "recheck" ? "bg-orange-500/10" : ""}>
+                <td className="whitespace-nowrap px-3 py-2 text-slate-400">{formatDateTime(i.inspectedAt)}</td>
+                <td className="whitespace-nowrap px-3 py-2 font-medium text-slate-300">{zoneName(i.zoneId)}</td>
                 <td className="whitespace-nowrap px-3 py-2">{i.product ?? "-"}</td>
                 <td className="whitespace-nowrap px-3 py-2">{i.travelerNo ?? "-"}</td>
                 <td className="px-3 py-2">{i.inspectionType.join(", ")}</td>
@@ -117,7 +117,7 @@ export function InspectionList({ inspections }: { inspections: QualityInspection
                   <QualityResultBadge result={i.result} />
                 </td>
                 <td className="whitespace-nowrap px-3 py-2">{i.inspector}</td>
-                <td className="max-w-[180px] truncate px-3 py-2 text-slate-500" title={i.note}>
+                <td className="max-w-[180px] truncate px-3 py-2 text-slate-400" title={i.note}>
                   {i.note ?? "-"}
                 </td>
                 <td className="px-3 py-2">

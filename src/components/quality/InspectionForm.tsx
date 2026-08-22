@@ -90,11 +90,11 @@ export function InspectionForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-white p-4">
-      <h2 className="text-sm font-bold text-slate-800">품질 순회점검 입력</h2>
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-white/10 bg-[#101c33] p-4">
+      <h2 className="text-sm font-bold text-slate-200">품질 순회점검 입력</h2>
 
       {errors.length > 0 && (
-        <div className="rounded-md bg-red-50 p-2 text-xs text-red-600">
+        <div className="rounded-md bg-red-500/10 p-2 text-xs text-red-300">
           {errors.map((e) => (
             <p key={e}>· {e}</p>
           ))}
@@ -160,7 +160,7 @@ export function InspectionForm({
       </div>
 
       <div>
-        <p className="mb-1.5 text-xs font-semibold text-slate-500">검사종류</p>
+        <p className="mb-1.5 text-xs font-semibold text-slate-400">검사종류</p>
         <div className="flex flex-wrap gap-1.5">
           {INSPECTION_TYPE_OPTIONS.map((t) => (
             <button
@@ -171,7 +171,7 @@ export function InspectionForm({
                 "rounded-full border px-3 py-1 text-xs font-medium " +
                 (types.includes(t)
                   ? "border-sky-500 bg-sky-500 text-white"
-                  : "border-slate-300 bg-white text-slate-600 hover:bg-slate-50")
+                  : "border-white/15 bg-white/5 text-slate-400 hover:bg-white/10")
               }
             >
               {t}
@@ -181,7 +181,7 @@ export function InspectionForm({
       </div>
 
       <div>
-        <p className="mb-1.5 text-xs font-semibold text-slate-500">점검결과</p>
+        <p className="mb-1.5 text-xs font-semibold text-slate-400">점검결과</p>
         <div className="flex gap-2">
           {RESULT_OPTIONS.map((r) => (
             <button
@@ -190,7 +190,7 @@ export function InspectionForm({
               onClick={() => setResult(r.value)}
               className={
                 "flex-1 rounded-lg border px-3 py-2 text-xs font-bold " +
-                (result === r.value ? r.className : "border-slate-200 bg-white text-slate-400")
+                (result === r.value ? r.className : "border-white/10 bg-white/5 text-slate-500")
               }
             >
               {r.label}
@@ -223,11 +223,11 @@ export function InspectionForm({
             setNote("");
             setFollowUpAction("");
           }}
-          className="flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-xs text-slate-500 hover:bg-slate-50"
+          className="flex items-center gap-1 rounded-lg border border-white/10 px-3 py-2 text-xs text-slate-400 hover:bg-white/5"
         >
           <X size={13} /> 초기화
         </button>
-        <button type="submit" className="rounded-lg bg-[#0b1a33] px-4 py-2 text-xs font-bold text-white hover:bg-[#122548]">
+        <button type="submit" className="rounded-lg bg-sky-600 px-4 py-2 text-xs font-bold text-white hover:bg-sky-500">
           점검결과 저장
         </button>
       </div>
@@ -235,11 +235,15 @@ export function InspectionForm({
       <style jsx>{`
         .input {
           width: 100%;
-          border: 1px solid #e2e8f0;
+          border: 1px solid rgba(255, 255, 255, 0.15);
           border-radius: 0.5rem;
           padding: 0.4rem 0.6rem;
           font-size: 0.8rem;
-          background: white;
+          background: rgba(255, 255, 255, 0.05);
+          color: #e2e8f0;
+        }
+        .input::placeholder {
+          color: #64748b;
         }
         .input:focus {
           outline: 2px solid #38bdf8;
@@ -253,7 +257,7 @@ export function InspectionForm({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-slate-500">{label}</span>
+      <span className="mb-1 block text-xs font-semibold text-slate-400">{label}</span>
       {children}
     </label>
   );

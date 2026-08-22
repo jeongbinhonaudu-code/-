@@ -183,22 +183,22 @@ function MapLegend() {
     { status: "neutral" },
   ];
   return (
-    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-xl bg-white px-4 py-2.5 text-xs shadow-sm">
+    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-xl border border-white/10 bg-[#101c33] px-4 py-2.5 text-xs shadow-sm">
       {items.map((it) => (
-        <span key={it.status} className="flex items-center gap-1.5 text-slate-600">
+        <span key={it.status} className="flex items-center gap-1.5 text-slate-300">
           <StatusDot status={it.status} /> {STATUS_LABEL[it.status].text}
         </span>
       ))}
-      <span className="flex items-center gap-1.5 text-slate-600">
+      <span className="flex items-center gap-1.5 text-slate-300">
         <span className="h-2.5 w-2.5 rounded-full ring-2 ring-red-500" /> 문제 설비 강조
       </span>
-      <span className="flex items-center gap-1 text-yellow-600">
+      <span className="flex items-center gap-1 text-yellow-400">
         <HelpCircle size={12} /> 도면 판독 확인 필요
       </span>
-      <span className="flex items-center gap-1 text-amber-600">
+      <span className="flex items-center gap-1 text-amber-400">
         <ArrowRight size={12} /> 연결 설비라인: 반자동 원통연마 → CNC 원통연마 → CLG 센터리스
       </span>
-      <span className="flex items-center gap-1.5 text-slate-500">
+      <span className="flex items-center gap-1.5 text-slate-400">
         <span className="h-1.5 w-4 rounded-full border-b-2 border-dashed border-amber-400" /> 안전선·통로
       </span>
     </div>

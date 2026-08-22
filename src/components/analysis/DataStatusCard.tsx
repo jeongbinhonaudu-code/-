@@ -10,8 +10,8 @@ export function DataStatusCard({ travelers }: { travelers: Traveler[] }) {
   const missingDates = travelers.filter((t) => !t.startDate || !t.endDate).length;
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
-      <h2 className="mb-1 text-sm font-bold text-slate-800">등록자료 현황 · 데이터 검증상태</h2>
+    <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
+      <h2 className="mb-1 text-sm font-bold text-slate-200">등록자료 현황 · 데이터 검증상태</h2>
       <p className="mb-3 text-[11px] text-slate-400">시스템에 업로드된 트레블러 기준 (예시 데이터 포함)</p>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <Stat label="업로드 건수" value={`${total}건`} />
@@ -28,10 +28,10 @@ export function DataStatusCard({ travelers }: { travelers: Traveler[] }) {
 
 function Stat({ label, value, badge }: { label: string; value: string; badge?: React.ReactNode }) {
   return (
-    <div className="rounded-lg bg-slate-50 px-3 py-2">
+    <div className="rounded-lg bg-white/5 px-3 py-2">
       <p className="text-[11px] text-slate-400">{label}</p>
       <div className="flex items-center gap-1.5">
-        <p className="text-base font-bold text-slate-800">{value}</p>
+        <p className="text-base font-bold text-slate-200">{value}</p>
         {badge}
       </div>
     </div>

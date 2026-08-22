@@ -47,32 +47,32 @@ export function TravelerList({
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-white p-3">
-        <div className="flex flex-1 min-w-[180px] items-center gap-1.5 rounded-lg border border-slate-200 px-2 py-1.5">
-          <Search size={14} className="text-slate-400" />
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-[#101c33] p-3">
+        <div className="flex flex-1 min-w-[180px] items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2 py-1.5">
+          <Search size={14} className="text-slate-500" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="트레블러 번호·제품명·파일명 검색"
-            className="w-full text-xs outline-none"
+            className="w-full bg-transparent text-xs text-slate-200 placeholder:text-slate-500 outline-none"
           />
         </div>
-        <select value={customerFilter} onChange={(e) => setCustomerFilter(e.target.value)} className="rounded-lg border border-slate-200 px-2 py-1.5 text-xs">
+        <select value={customerFilter} onChange={(e) => setCustomerFilter(e.target.value)} className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-xs text-slate-200">
           <option value="all">전체 고객사</option>
           <option value="현대">현대</option>
           <option value="OEM">OEM</option>
           <option value="미분류">미분류</option>
         </select>
-        <select value={includedFilter} onChange={(e) => setIncludedFilter(e.target.value)} className="rounded-lg border border-slate-200 px-2 py-1.5 text-xs">
+        <select value={includedFilter} onChange={(e) => setIncludedFilter(e.target.value)} className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-xs text-slate-200">
           <option value="all">분석포함 전체</option>
           <option value="included">분석대상 포함</option>
           <option value="excluded">분석대상 제외</option>
         </select>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <div className="overflow-x-auto rounded-xl border border-white/10 bg-[#101c33]">
         <table className="w-full min-w-[1000px] text-xs">
-          <thead className="bg-slate-50 text-slate-500">
+          <thead className="bg-white/5 text-slate-400">
             <tr>
               <Th></Th>
               <Th>파일명</Th>
@@ -86,27 +86,27 @@ export function TravelerList({
               <Th>분석포함</Th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-white/5">
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={10} className="px-3 py-8 text-center text-slate-400">
+                <td colSpan={10} className="px-3 py-8 text-center text-slate-500">
                   등록된 트레블러가 없습니다. 위 업로드 영역에서 PDF를 추가하세요.
                 </td>
               </tr>
             )}
             {filtered.map((t) => (
               <Fragment key={t.id}>
-                <tr className={duplicateNos.has(t.travelerNo) ? "bg-yellow-50" : ""}>
+                <tr className={duplicateNos.has(t.travelerNo) ? "bg-yellow-500/10" : ""}>
                   <td className="px-2 py-2">
-                    <button onClick={() => setExpandedId(expandedId === t.id ? null : t.id)} className="text-slate-400">
+                    <button onClick={() => setExpandedId(expandedId === t.id ? null : t.id)} className="text-slate-500">
                       {expandedId === t.id ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     </button>
                   </td>
-                  <td className="max-w-[160px] truncate px-3 py-2" title={t.fileName}>
+                  <td className="max-w-[160px] truncate px-3 py-2 text-slate-300" title={t.fileName}>
                     {t.fileName}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2 font-medium">
-                    {t.travelerNo || <span className="text-slate-300">입력 필요</span>}
+                  <td className="whitespace-nowrap px-3 py-2 font-medium text-slate-200">
+                    {t.travelerNo || <span className="text-slate-500">입력 필요</span>}
                     {duplicateNos.has(t.travelerNo) && t.travelerNo && (
                       <>
                         <span className="ml-1 rounded bg-yellow-200 px-1 text-[10px] text-yellow-800">중복 의심</span>
@@ -120,23 +120,23 @@ export function TravelerList({
                       </>
                     )}
                     {t.mergedFileIds && t.mergedFileIds.length > 0 && (
-                      <span className="ml-1 inline-flex items-center gap-0.5 rounded bg-slate-200 px-1 text-[10px] text-slate-600">
+                      <span className="ml-1 inline-flex items-center gap-0.5 rounded bg-white/10 px-1 text-[10px] text-slate-300">
                         <Combine size={9} /> 병합됨
                       </span>
                     )}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2">{t.productName || "-"}</td>
+                  <td className="whitespace-nowrap px-3 py-2 text-slate-300">{t.productName || "-"}</td>
                   <td className="whitespace-nowrap px-3 py-2">
                     <span className={"rounded-full border px-2 py-0.5 text-[11px] font-semibold " + CUSTOMER_BADGE[t.customer]}>
                       {t.customer}
                     </span>
-                    {t.customerManuallySet && <span className="ml-1 text-[10px] text-slate-400">(수동)</span>}
+                    {t.customerManuallySet && <span className="ml-1 text-[10px] text-slate-500">(수동)</span>}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2">{t.material || "-"}</td>
-                  <td className="whitespace-nowrap px-3 py-2">
+                  <td className="whitespace-nowrap px-3 py-2 text-slate-300">{t.material || "-"}</td>
+                  <td className="whitespace-nowrap px-3 py-2 text-slate-300">
                     {t.quantityMin != null ? `${t.quantityMin}${t.quantityMax && t.quantityMax !== t.quantityMin ? `~${t.quantityMax}` : ""}` : "확인 필요"}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2">
+                  <td className="whitespace-nowrap px-3 py-2 text-slate-300">
                     {t.startDate ?? "확인 필요"} ~ {t.endDate ?? "확인 필요"}
                   </td>
                   <td className="whitespace-nowrap px-3 py-2">
@@ -154,7 +154,7 @@ export function TravelerList({
                 </tr>
                 {expandedId === t.id && (
                   <tr>
-                    <td colSpan={10} className="bg-slate-50 px-4 py-3">
+                    <td colSpan={10} className="bg-white/5 px-4 py-3">
                       <EditRow traveler={t} onUpdate={onUpdate} />
                     </td>
                   </tr>
@@ -242,7 +242,7 @@ function EditRow({ traveler, onUpdate }: { traveler: Traveler; onUpdate: (id: st
       </EditField>
 
       <div className="col-span-2 flex items-end gap-2 sm:col-span-4">
-        <button onClick={save} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+        <button onClick={save} className="rounded-lg border border-white/15 bg-[#101c33] px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-white/5">
           변경사항 저장
         </button>
         <button onClick={markVerified} className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700">
@@ -253,11 +253,15 @@ function EditRow({ traveler, onUpdate }: { traveler: Traveler; onUpdate: (id: st
       <style jsx>{`
         .input {
           width: 100%;
-          border: 1px solid #e2e8f0;
+          border: 1px solid rgba(255, 255, 255, 0.15);
           border-radius: 0.5rem;
           padding: 0.35rem 0.5rem;
           font-size: 0.75rem;
-          background: white;
+          background: rgba(255, 255, 255, 0.05);
+          color: #e2e8f0;
+        }
+        .input::placeholder {
+          color: #64748b;
         }
       `}</style>
     </div>
@@ -267,7 +271,7 @@ function EditRow({ traveler, onUpdate }: { traveler: Traveler; onUpdate: (id: st
 function EditField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[11px] font-semibold text-slate-500">{label}</span>
+      <span className="mb-1 block text-[11px] font-semibold text-slate-400">{label}</span>
       {children}
     </label>
   );

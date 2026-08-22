@@ -22,28 +22,28 @@ const REQUIRED_DATA = [
 export function CauseCandidates() {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
+      <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
         <div className="mb-1 flex items-center gap-2">
-          <h2 className="text-sm font-bold text-slate-800">원인 후보 (확인 필요)</h2>
+          <h2 className="text-sm font-bold text-slate-200">원인 후보 (확인 필요)</h2>
           <DataBadge reliability="missing" />
         </div>
         <p className="mb-2 text-[11px] text-slate-400">
           생산량 변화의 원인은 아래 여러 요인이 복합적으로 작용했을 수 있으며, 현재 데이터만으로는 특정 요인(예: 경력자
           퇴사)을 확정 원인으로 단정할 수 없습니다.
         </p>
-        <ul className="list-disc space-y-1 pl-4 text-xs text-slate-600">
+        <ul className="list-disc space-y-1 pl-4 text-xs text-slate-400">
           {CANDIDATES.map((c) => (
             <li key={c}>{c}</li>
           ))}
         </ul>
       </div>
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
+      <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
         <div className="mb-1 flex items-center gap-2">
-          <h2 className="text-sm font-bold text-slate-800">추가 필요자료</h2>
+          <h2 className="text-sm font-bold text-slate-200">추가 필요자료</h2>
           <DataBadge reliability="missing" />
         </div>
         <p className="mb-2 text-[11px] text-slate-400">아래 자료가 확보되면 추정값을 실제 확정값으로 교체할 수 있습니다.</p>
-        <ul className="list-disc space-y-1 pl-4 text-xs text-slate-600">
+        <ul className="list-disc space-y-1 pl-4 text-xs text-slate-400">
           {REQUIRED_DATA.map((c) => (
             <li key={c}>{c}</li>
           ))}

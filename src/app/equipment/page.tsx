@@ -31,8 +31,8 @@ export default function EquipmentPage() {
     <div className="mx-auto max-w-[1400px] px-3 py-4 sm:px-4 sm:py-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">설비현황</h1>
-          <p className="mt-1 text-sm text-slate-500">등록된 설비 {equipmentList.length}대의 현재 상태를 한눈에 확인합니다.</p>
+          <h1 className="text-xl font-bold text-slate-100">설비현황</h1>
+          <p className="mt-1 text-sm text-slate-400">등록된 설비 {equipmentList.length}대의 현재 상태를 한눈에 확인합니다.</p>
         </div>
         <button
           onClick={() =>
@@ -50,18 +50,18 @@ export default function EquipmentPage() {
               }))
             )
           }
-          className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+          className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-[#101c33] px-3 py-2 text-xs font-semibold text-slate-400 hover:bg-white/5"
         >
           <Download size={14} /> CSV 내보내기
         </button>
       </div>
 
-      <div className="mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-white p-3">
-        <div className="flex flex-1 min-w-[180px] items-center gap-1.5 rounded-lg border border-slate-200 px-2 py-1.5">
-          <Search size={14} className="text-slate-400" />
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="설비명·구역 검색" className="w-full text-xs outline-none" />
+      <div className="mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-[#101c33] p-3">
+        <div className="flex flex-1 min-w-[180px] items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2 py-1.5">
+          <Search size={14} className="text-slate-500" />
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="설비명·구역 검색" className="w-full bg-transparent text-xs text-slate-200 placeholder:text-slate-500 outline-none" />
         </div>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-lg border border-slate-200 px-2 py-1.5 text-xs">
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-xs text-slate-200">
           <option value="all">전체 상태</option>
           <option value="running">작업 중</option>
           <option value="quality_check">품질 확인/재확인</option>
@@ -71,9 +71,9 @@ export default function EquipmentPage() {
         </select>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <div className="overflow-x-auto rounded-xl border border-white/10 bg-[#101c33]">
         <table className="w-full min-w-[900px] text-xs">
-          <thead className="bg-slate-50 text-slate-500">
+          <thead className="bg-white/5 text-slate-400">
             <tr>
               <Th>구역</Th>
               <Th>설비명</Th>
@@ -85,10 +85,10 @@ export default function EquipmentPage() {
               <Th>최근 품질결과</Th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-white/5">
             {filtered.map((e) => (
               <tr key={e.id}>
-                <td className="whitespace-nowrap px-3 py-2 font-medium text-slate-700">{zoneName(e.zoneId)}</td>
+                <td className="whitespace-nowrap px-3 py-2 font-medium text-slate-300">{zoneName(e.zoneId)}</td>
                 <td className="whitespace-nowrap px-3 py-2">{e.name}</td>
                 <td className="px-3 py-2">{e.count}</td>
                 <td className="px-3 py-2">
@@ -96,7 +96,7 @@ export default function EquipmentPage() {
                 </td>
                 <td className="whitespace-nowrap px-3 py-2">{e.currentProduct ?? "-"}</td>
                 <td className="px-3 py-2">{e.currentQuantity ?? "-"}</td>
-                <td className="whitespace-nowrap px-3 py-2 text-slate-500">
+                <td className="whitespace-nowrap px-3 py-2 text-slate-400">
                   {e.lastInspectionAt ? formatDateTime(e.lastInspectionAt) : "미점검"}
                 </td>
                 <td className="px-3 py-2">

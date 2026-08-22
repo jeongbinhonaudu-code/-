@@ -22,14 +22,14 @@ export default function ProductsPage() {
 
   return (
     <div className="mx-auto max-w-[1400px] px-3 py-4 sm:px-4 sm:py-6">
-      <h1 className="text-xl font-bold text-slate-900">진행제품</h1>
-      <p className="mt-1 text-sm text-slate-500">현재 공정에서 진행 중인 제품과 위치별 수량입니다.</p>
+      <h1 className="text-xl font-bold text-slate-100">진행제품</h1>
+      <p className="mt-1 text-sm text-slate-400">현재 공정에서 진행 중인 제품과 위치별 수량입니다.</p>
       <p className="mt-2 text-xs text-slate-400">
         각 항목은 예시 데이터 또는 설비 상세패널에서 생산팀이 직접 입력한 확정값일 수 있으며, 카드별 배지로 구분됩니다.
       </p>
 
       {byProduct.size === 0 ? (
-        <p className="mt-6 rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-400">
+        <p className="mt-6 rounded-xl border border-white/10 bg-[#101c33] p-6 text-center text-sm text-slate-400">
           진행 중인 제품이 없습니다. 공장 조감도에서 설비를 선택해 현재제품을 입력하세요.
         </p>
       ) : (
@@ -37,11 +37,11 @@ export default function ProductsPage() {
           {[...byProduct.entries()].map(([product, items]) => {
             const totalQty = items.reduce((sum, i) => sum + (i.currentQuantity ?? 0), 0);
             return (
-              <div key={product} className="rounded-xl border border-slate-200 bg-white p-4">
+              <div key={product} className="rounded-xl border border-white/10 bg-[#101c33] p-4">
                 <div className="mb-2 flex items-center justify-between">
-                  <h2 className="text-sm font-bold text-slate-800">{product.replace("예시) ", "")}</h2>
+                  <h2 className="text-sm font-bold text-slate-200">{product.replace("예시) ", "")}</h2>
                   <div className="flex items-center gap-1.5">
-                    <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-semibold text-slate-500">
+                    <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-semibold text-slate-400">
                       {classifyCustomer(product.replace("예시) ", ""))}
                     </span>
                     <DataBadge reliability={items[0].quantityReliability ?? "sample"} />
@@ -50,7 +50,7 @@ export default function ProductsPage() {
                 <p className="mb-2 text-xs text-slate-400">총 진행수량 {totalQty}개 (표본 {items.length}개 설비)</p>
                 <ul className="space-y-1.5">
                   {items.map((i) => (
-                    <li key={i.id} className="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-1.5 text-xs">
+                    <li key={i.id} className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-1.5 text-xs">
                       <span>
                         {zoneName(i.zoneId)} · {i.name}
                       </span>

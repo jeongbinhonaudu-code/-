@@ -41,8 +41,8 @@ export function NextInspectionPanel({ inspections }: { inspections: QualityInspe
   const recommended = [...neverInspected, ...stale].slice(0, 6);
 
   return (
-    <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-4">
-      <h2 className="flex items-center gap-1.5 text-sm font-bold text-slate-800">
+    <div className="space-y-3 rounded-xl border border-white/10 bg-[#101c33] p-4">
+      <h2 className="flex items-center gap-1.5 text-sm font-bold text-slate-200">
         <Clock3 size={16} className="text-orange-500" /> 다음 순회점검 추천 대상
       </h2>
       {recommended.length === 0 ? (
@@ -52,14 +52,14 @@ export function NextInspectionPanel({ inspections }: { inspections: QualityInspe
           {recommended.map(({ eq, latest, daysSince }) => (
             <li
               key={eq.id}
-              className="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2 text-xs"
+              className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2 text-xs"
             >
               <div>
-                <p className="font-semibold text-slate-700">{eq.name}</p>
+                <p className="font-semibold text-slate-300">{eq.name}</p>
                 <p className="text-[11px] text-slate-400">{zoneName(eq.zoneId)}</p>
               </div>
               {!latest ? (
-                <span className="flex items-center gap-1 rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-bold text-slate-600">
+                <span className="flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-bold text-slate-300">
                   <AlertCircle size={11} /> 미점검
                 </span>
               ) : (
@@ -71,7 +71,7 @@ export function NextInspectionPanel({ inspections }: { inspections: QualityInspe
           ))}
         </ul>
       )}
-      <p className="border-t border-slate-100 pt-2 text-[11px] text-slate-400">
+      <p className="border-t border-white/5 pt-2 text-[11px] text-slate-400">
         전체 {equipmentList.length}대 중 미점검 {neverInspected.length}대 · {STALE_DAYS}일 이상 경과 {stale.length}대
       </p>
     </div>

@@ -66,12 +66,12 @@ export function PhotoGallery({ equipmentId, equipmentName }: { equipmentId: stri
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <p className="flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+        <p className="flex items-center gap-1.5 text-xs font-semibold text-slate-400">
           <Camera size={14} /> 설비사진 ({photos.length}장)
         </p>
         <button
           onClick={() => inputRef.current?.click()}
-          className="flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-[11px] font-medium text-slate-600 hover:bg-slate-50"
+          className="flex items-center gap-1 rounded-md border border-white/15 bg-[#101c33] px-2 py-1 text-[11px] font-medium text-slate-300 hover:bg-white/5"
         >
           <Upload size={12} /> 사진 추가
         </button>
@@ -85,18 +85,18 @@ export function PhotoGallery({ equipmentId, equipmentName }: { equipmentId: stri
         />
       </div>
 
-      {error && <p className="mb-2 rounded bg-red-50 px-2 py-1 text-[11px] text-red-600">{error}</p>}
+      {error && <p className="mb-2 rounded bg-red-500/10 px-2 py-1 text-[11px] text-red-300">{error}</p>}
 
       {photos.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 py-6 text-center">
-          <Camera className="mb-1 text-slate-300" size={22} />
+        <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-white/15 bg-white/5 py-6 text-center">
+          <Camera className="mb-1 text-slate-500" size={22} />
           <p className="text-xs font-medium text-slate-400">사진 등록 예정</p>
-          <p className="text-[10px] text-slate-400">{equipmentName}의 실제 현장사진을 업로드하세요</p>
+          <p className="text-[10px] text-slate-500">{equipmentName}의 실제 현장사진을 업로드하세요</p>
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4">
           {photos.map((p) => (
-            <div key={p.id} className="group relative aspect-square overflow-hidden rounded-md border border-slate-200">
+            <div key={p.id} className="group relative aspect-square overflow-hidden rounded-md border border-white/10">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={p.url}

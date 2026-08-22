@@ -9,8 +9,8 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-[1600px] px-3 py-4 sm:px-4 sm:py-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">공장 실시간 조감도</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <h1 className="text-xl font-bold text-slate-100 sm:text-2xl">공장 실시간 조감도</h1>
+          <p className="mt-1 text-sm text-slate-400">
             설비 위치·현재 작업제품·생산수량·설비상태·품질점검 결과를 하나의 화면에서 확인합니다.
           </p>
         </div>
@@ -27,7 +27,7 @@ export default function DashboardPage() {
 
       <div className="mt-4 flex items-center gap-2">
         <DataBadge reliability="sample" />
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-slate-400">
           현재 화면의 제품·수량·상태 값은 시연용 예시 데이터입니다. 실제 데이터 연동 전까지 실제값처럼 사용하지 마세요.
         </p>
       </div>
@@ -58,8 +58,8 @@ function QuickLink({
         (accent
           ? "bg-orange-500 text-white hover:bg-orange-600"
           : active
-          ? "bg-[#0b1a33] text-white"
-          : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200")
+          ? "bg-sky-600 text-white"
+          : "bg-[#101c33] text-slate-400 hover:bg-white/5 border border-white/10")
       }
     >
       {label}

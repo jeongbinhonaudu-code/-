@@ -19,14 +19,14 @@ const ROADMAP = [
 export default function SettingsPage() {
   return (
     <div className="mx-auto max-w-[1100px] px-3 py-4 sm:px-4 sm:py-6">
-      <h1 className="text-xl font-bold text-slate-900">시스템 설정</h1>
-      <p className="mt-1 text-sm text-slate-500">현재 시스템 단계와 데이터 신뢰성 표시 기준입니다.</p>
+      <h1 className="text-xl font-bold text-slate-100">시스템 설정</h1>
+      <p className="mt-1 text-sm text-slate-400">현재 시스템 단계와 데이터 신뢰성 표시 기준입니다.</p>
 
-      <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
-        <h2 className="mb-2 text-sm font-bold text-slate-800">데이터 신뢰성 표시 기준</h2>
+      <div className="mt-4 rounded-xl border border-white/10 bg-[#101c33] p-4">
+        <h2 className="mb-2 text-sm font-bold text-slate-200">데이터 신뢰성 표시 기준</h2>
         <ul className="space-y-2">
           {RELIABILITY_ITEMS.map((it) => (
-            <li key={it.key} className="flex items-center gap-3 text-xs text-slate-600">
+            <li key={it.key} className="flex items-center gap-3 text-xs text-slate-400">
               <DataBadge reliability={it.key} />
               {it.desc}
             </li>
@@ -36,9 +36,9 @@ export default function SettingsPage() {
 
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
         {ROADMAP.map((r) => (
-          <div key={r.phase} className="rounded-xl border border-slate-200 bg-white p-4">
-            <h3 className="mb-2 text-sm font-bold text-slate-800">{r.phase}</h3>
-            <ul className="list-disc space-y-1 pl-4 text-xs text-slate-600">
+          <div key={r.phase} className="rounded-xl border border-white/10 bg-[#101c33] p-4">
+            <h3 className="mb-2 text-sm font-bold text-slate-200">{r.phase}</h3>
+            <ul className="list-disc space-y-1 pl-4 text-xs text-slate-400">
               {r.items.map((i) => (
                 <li key={i}>{i}</li>
               ))}
@@ -47,8 +47,8 @@ export default function SettingsPage() {
         ))}
       </div>
 
-      <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4 text-xs text-slate-500">
-        <h2 className="mb-1 text-sm font-bold text-slate-800">기술 스택 (1단계)</h2>
+      <div className="mt-4 rounded-xl border border-white/10 bg-[#101c33] p-4 text-xs text-slate-400">
+        <h2 className="mb-1 text-sm font-bold text-slate-200">기술 스택 (1단계)</h2>
         <p>Next.js (App Router) · React · TypeScript · Tailwind CSS · Recharts · 브라우저 localStorage 임시 저장</p>
         <p className="mt-1">
           2단계부터 PostgreSQL 등 관계형 DB, 서버 인증, 파일 저장소(사진·PDF)를 연동해 사내 서버 또는 클라우드에

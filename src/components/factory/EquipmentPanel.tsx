@@ -25,18 +25,18 @@ export function EquipmentPanel({
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      <div className="relative flex h-full w-full max-w-md flex-col overflow-y-auto bg-white shadow-2xl">
-        <div className="sticky top-0 z-10 flex items-start justify-between border-b border-slate-200 bg-white px-4 py-3">
+      <div className="relative flex h-full w-full max-w-md flex-col overflow-y-auto bg-[#101c33] shadow-2xl">
+        <div className="sticky top-0 z-10 flex items-start justify-between border-b border-white/10 bg-[#101c33] px-4 py-3">
           <div>
-            <h2 className="text-base font-bold text-slate-900">{zone.name}</h2>
-            {zone.description && <p className="mt-0.5 text-xs text-slate-500">{zone.description}</p>}
+            <h2 className="text-base font-bold text-slate-100">{zone.name}</h2>
+            {zone.description && <p className="mt-0.5 text-xs text-slate-400">{zone.description}</p>}
           </div>
-          <button onClick={onClose} className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100">
+          <button onClick={onClose} className="rounded-full p-1.5 text-slate-400 hover:bg-white/5">
             <X size={18} />
           </button>
         </div>
 
-        <div className="flex-1 divide-y divide-slate-100">
+        <div className="flex-1 divide-y divide-white/5">
           {equipmentList.length === 0 && (
             <p className="px-4 py-6 text-sm text-slate-400">등록된 설비 정보가 없습니다. (입력 필요)</p>
           )}
@@ -63,7 +63,7 @@ function EquipmentCard({
   return (
     <div className="space-y-3 px-4 py-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-slate-900">{eq.name}</h3>
+        <h3 className="text-sm font-bold text-slate-100">{eq.name}</h3>
         <StatusBadge status={eq.status} />
       </div>
 
@@ -79,7 +79,7 @@ function EquipmentCard({
           }}
         />
       ) : (
-        <dl className="grid grid-cols-2 gap-x-2 gap-y-1.5 rounded-lg bg-slate-50 p-3 text-xs">
+        <dl className="grid grid-cols-2 gap-x-2 gap-y-1.5 rounded-lg bg-white/5 p-3 text-xs">
           <Row label="현재 제품" value={eq.currentProduct ?? "확인 필요"} />
           <Row label="트레블러 번호" value={eq.currentTravelerNo ?? "확인 필요"} />
           <Row
@@ -103,7 +103,7 @@ function EquipmentCard({
       {!editing && (
         <button
           onClick={() => setEditing(true)}
-          className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50"
+          className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-white/15 bg-[#101c33] px-3 py-2 text-xs font-bold text-slate-400 hover:bg-white/5"
         >
           <Pencil size={13} /> 현재제품·수량·상태 수정 (생산팀)
         </button>
@@ -150,7 +150,7 @@ function EditForm({
   }
 
   return (
-    <div className="space-y-2 rounded-lg border border-sky-200 bg-sky-50 p-3">
+    <div className="space-y-2 rounded-lg border border-sky-500/30 bg-sky-500/10 p-3">
       <div className="grid grid-cols-2 gap-2">
         <EditField label="현재 제품">
           <input className="input" value={product} onChange={(e) => setProduct(e.target.value)} placeholder="예: H3240" />
@@ -175,7 +175,7 @@ function EditForm({
         </EditField>
       </div>
       <div className="flex justify-end gap-2 pt-1">
-        <button onClick={onCancel} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-500 hover:bg-slate-50">
+        <button onClick={onCancel} className="rounded-lg border border-white/15 bg-[#101c33] px-3 py-1.5 text-xs text-slate-400 hover:bg-white/5">
           취소
         </button>
         <button onClick={handleSave} className="flex items-center gap-1 rounded-lg bg-sky-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-sky-700">
@@ -185,11 +185,12 @@ function EditForm({
       <style jsx>{`
         .input {
           width: 100%;
-          border: 1px solid #bae6fd;
+          border: 1px solid rgba(56, 189, 248, 0.3);
           border-radius: 0.5rem;
           padding: 0.35rem 0.5rem;
           font-size: 0.75rem;
-          background: white;
+          background: rgba(255, 255, 255, 0.05);
+          color: #e2e8f0;
         }
       `}</style>
     </div>
@@ -199,7 +200,7 @@ function EditForm({
 function EditField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[11px] font-semibold text-slate-500">{label}</span>
+      <span className="mb-1 block text-[11px] font-semibold text-slate-400">{label}</span>
       {children}
     </label>
   );
@@ -209,7 +210,7 @@ function Row({ label, value, extra }: { label: string; value?: string; extra?: R
   return (
     <>
       <dt className="text-slate-400">{label}</dt>
-      <dd className="flex items-center justify-end gap-1 text-right font-medium text-slate-700">
+      <dd className="flex items-center justify-end gap-1 text-right font-medium text-slate-300">
         {value}
         {extra}
       </dd>

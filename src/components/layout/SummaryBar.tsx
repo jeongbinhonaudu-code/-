@@ -37,29 +37,33 @@ export function SummaryBar() {
       {cards.map((c) => (
         <div
           key={c.label}
-          className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-sm"
+          className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#101c33] px-3 py-3 shadow-sm"
         >
           <span
             className={
               "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg " +
-              (c.danger ? "bg-red-100 text-red-600" : c.warn ? "bg-orange-100 text-orange-600" : "bg-sky-100 text-sky-600")
+              (c.danger
+                ? "bg-red-500/15 text-red-300"
+                : c.warn
+                ? "bg-orange-500/15 text-orange-300"
+                : "bg-sky-500/15 text-sky-300")
             }
           >
             <c.icon size={18} />
           </span>
           <div>
             <p className="text-[11px] text-slate-400">{c.label}</p>
-            <p className="text-lg font-bold leading-tight text-slate-900">{c.value}</p>
+            <p className="text-lg font-bold leading-tight text-slate-100">{c.value}</p>
           </div>
         </div>
       ))}
-      <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-sm">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+      <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#101c33] px-3 py-3 shadow-sm">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 text-slate-400">
           <Clock size={18} />
         </span>
         <div>
           <p className="text-[11px] text-slate-400">마지막 데이터 갱신</p>
-          <p className="text-xs font-bold leading-tight text-slate-900">
+          <p className="text-xs font-bold leading-tight text-slate-100">
             {lastUpdated ? formatDateTime(lastUpdated) : "확인 필요"}
           </p>
           <DataBadge reliability={overrides.length > 0 ? "confirmed" : "sample"} className="mt-1" />

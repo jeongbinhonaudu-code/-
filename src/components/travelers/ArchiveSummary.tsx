@@ -4,9 +4,9 @@ import { DataBadge } from "@/components/ui/DataBadge";
 export function ArchiveSummary() {
   const s = TRAVELER_ARCHIVE_SUMMARY;
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
       <div className="mb-2 flex items-center gap-2">
-        <h2 className="text-sm font-bold text-slate-800">보유 자료 현황 (제공 자료 기준)</h2>
+        <h2 className="text-sm font-bold text-slate-200">보유 자료 현황 (제공 자료 기준)</h2>
         <DataBadge reliability="confirmed" />
       </div>
       <div className="grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
@@ -28,9 +28,9 @@ export function ArchiveSummary() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg bg-slate-50 px-3 py-2">
+    <div className="rounded-lg bg-white/5 px-3 py-2">
       <p className="text-[11px] text-slate-400">{label}</p>
-      <p className="font-bold text-slate-800">{value}</p>
+      <p className="font-bold text-slate-200">{value}</p>
     </div>
   );
 }
