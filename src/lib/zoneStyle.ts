@@ -1,26 +1,37 @@
-import { FactoryZone } from "@/types";
+import { EquipmentStatus, FactoryZone } from "@/types";
 
-export const ZONE_CATEGORY_STYLE: Record<FactoryZone["category"], { bg: string; accent: string; label: string }> = {
-  warehouse: { bg: "bg-indigo-950/40", accent: "border-indigo-400/60", label: "창고" },
-  inspection: { bg: "bg-cyan-950/40", accent: "border-cyan-400/60", label: "검사" },
-  marking: { bg: "bg-teal-950/40", accent: "border-teal-400/60", label: "마킹" },
-  grinding: { bg: "bg-sky-950/40", accent: "border-sky-400/60", label: "연마" },
-  packaging: { bg: "bg-violet-950/40", accent: "border-violet-400/60", label: "포장" },
-  quality: { bg: "bg-orange-950/40", accent: "border-orange-400/70", label: "품질" },
-  end_process: { bg: "bg-blue-950/40", accent: "border-blue-400/60", label: "단부" },
-  sheet_grinding: { bg: "bg-sky-950/40", accent: "border-sky-400/60", label: "시트연마" },
-  pt_buffing: { bg: "bg-cyan-950/40", accent: "border-cyan-400/60", label: "PT·버핑" },
-  correction: { bg: "bg-teal-950/40", accent: "border-teal-400/60", label: "교정" },
-  auto_robot: { bg: "bg-fuchsia-950/40", accent: "border-fuchsia-400/60", label: "자동화" },
-  sample_reagent: { bg: "bg-emerald-950/40", accent: "border-emerald-400/60", label: "시편·시약" },
-  mt: { bg: "bg-emerald-950/40", accent: "border-emerald-400/60", label: "MT" },
-  corridor: { bg: "bg-slate-800/30", accent: "border-transparent", label: "통로" },
-  gate: { bg: "bg-slate-800/20", accent: "border-transparent", label: "출입구" },
-  material: { bg: "bg-amber-950/40", accent: "border-amber-400/60", label: "소재" },
-  forging: { bg: "bg-rose-950/40", accent: "border-rose-400/60", label: "단조" },
-  heat_treatment: { bg: "bg-red-950/40", accent: "border-red-400/60", label: "열처리" },
-  welding: { bg: "bg-orange-950/40", accent: "border-orange-400/60", label: "용접" },
-  lathe: { bg: "bg-indigo-950/40", accent: "border-indigo-400/50", label: "선반" },
-  machining: { bg: "bg-cyan-950/40", accent: "border-cyan-400/50", label: "가공" },
-  logistics: { bg: "bg-stone-800/40", accent: "border-stone-400/50", label: "물류" },
+// 참고 도면처럼 카드 본체는 통일된 톤을 쓰고, 테두리 색으로만 "현재 작업 상태"를
+// 표시한다 (카테고리별 무지개색은 좌측 강조선 + 아이콘으로만 보조 표시).
+export const STATUS_ZONE_STYLE: Record<EquipmentStatus, { bg: string; border: string }> = {
+  running: { bg: "bg-[#122a1f]/70", border: "border-emerald-400/70" },
+  quality_check: { bg: "bg-[#2a2010]/70", border: "border-orange-400/70" },
+  nonconforming: { bg: "bg-[#2a1414]/70", border: "border-red-500/80" },
+  waiting: { bg: "bg-[#16233d]/70", border: "border-slate-500/40" },
+  neutral: { bg: "bg-[#16233d]/70", border: "border-sky-400/30" },
+};
+
+// accent: 카드 좌측 강조선(카테고리 구분용, 좁은 4px 스트라이프) 배경색
+export const ZONE_CATEGORY_STYLE: Record<FactoryZone["category"], { accent: string; label: string }> = {
+  warehouse: { accent: "bg-indigo-400/70", label: "창고" },
+  inspection: { accent: "bg-cyan-400/70", label: "검사" },
+  marking: { accent: "bg-teal-400/70", label: "마킹" },
+  grinding: { accent: "bg-sky-400/70", label: "연마" },
+  packaging: { accent: "bg-violet-400/70", label: "포장" },
+  quality: { accent: "bg-orange-400/70", label: "품질" },
+  end_process: { accent: "bg-blue-400/70", label: "단부" },
+  sheet_grinding: { accent: "bg-sky-400/70", label: "시트연마" },
+  pt_buffing: { accent: "bg-cyan-400/70", label: "PT·버핑" },
+  correction: { accent: "bg-teal-400/70", label: "교정" },
+  auto_robot: { accent: "bg-fuchsia-400/70", label: "자동화" },
+  sample_reagent: { accent: "bg-emerald-400/70", label: "시편·시약" },
+  mt: { accent: "bg-emerald-400/70", label: "MT" },
+  corridor: { accent: "bg-transparent", label: "통로" },
+  gate: { accent: "bg-transparent", label: "출입구" },
+  material: { accent: "bg-amber-400/70", label: "소재" },
+  forging: { accent: "bg-rose-400/70", label: "단조" },
+  heat_treatment: { accent: "bg-red-400/70", label: "열처리" },
+  welding: { accent: "bg-orange-400/70", label: "용접" },
+  lathe: { accent: "bg-indigo-400/60", label: "선반" },
+  machining: { accent: "bg-cyan-400/60", label: "가공" },
+  logistics: { accent: "bg-stone-400/60", label: "물류" },
 };

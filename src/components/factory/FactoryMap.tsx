@@ -3,11 +3,11 @@
 import { useMemo, useState } from "react";
 import { Equipment, FactoryZone } from "@/types";
 import { getByZone, getZoneStatus, useEffectiveEquipment } from "@/lib/equipmentOverrides";
-import { GRINDING_LINE_IDS, corridorSignage, mapSectionLabels } from "@/data/zones";
-import { ZONE_CATEGORY_STYLE } from "@/lib/zoneStyle";
+import { GRINDING_LINE_IDS, corridorSignage, mapSectionLabels, routeWaypoints } from "@/data/zones";
+import { STATUS_ZONE_STYLE, ZONE_CATEGORY_STYLE } from "@/lib/zoneStyle";
 import { ZONE_CATEGORY_ICON } from "@/lib/zoneIcons";
 import { QUALITY_RESULT_LABEL, STATUS_LABEL } from "@/lib/labels";
-import { GRID_COLS, GRID_ROWS, parseSpan, zoneTopCenterPct } from "@/lib/gridGeometry";
+import { GRID_COLS, GRID_ROWS, linePct, parseSpan, zoneTopCenterPct } from "@/lib/gridGeometry";
 import { StatusDot } from "@/components/ui/StatusBadge";
 import { EquipmentPanel } from "@/components/factory/EquipmentPanel";
 import { ArrowRight, ArrowUpDown, Camera, ChevronDown, HelpCircle, Milestone } from "lucide-react";
@@ -24,6 +24,8 @@ export function FactoryMap({ zones }: { zones: FactoryZone[] }) {
     if (line.length < 2) return null;
     return line.map((z) => zoneTopCenterPct(z.gridColumn, z.gridRow));
   }, [zones]);
+
+  const routePoints = useMemo(() => routeWaypoints.map((p) => linePct(p.col, p.row)), []);
 
   const selectedZone = zones.find((z) => z.id === selectedZoneId) ?? null;
 
@@ -72,6 +74,45 @@ export function FactoryMap({ zones }: { zones: FactoryZone[] }) {
                 <ZoneCard key={zone.id} zone={zone} equipmentList={equipment} onSelect={() => setSelectedZoneId(zone.id)} />
               ))}
             </div>
+
+            {/* 전체 동선 안내선 — 입구부터 마지막 구역까지, 참고 도면의 노란 경로선처럼
+                지도 바깥 벽과 3개 통로를 따라 하나로 이어 그린다 */}
+            <svg
+              className="pointer-events-none absolute inset-0 h-full w-full"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <marker id="route-arrow" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto">
+                  <path d="M0,0 L5,2.5 L0,5 Z" fill="#fbbf24" />
+                </marker>
+                <marker id="route-turn" markerWidth="3" markerHeight="3" refX="1.5" refY="1.5">
+                  <circle cx="1.5" cy="1.5" r="1.3" fill="#fde68a" stroke="#0c1c3a" strokeWidth="0.4" />
+                </marker>
+              </defs>
+              {/* 은은한 글로우 레이어 */}
+              <polyline
+                points={routePoints.map((p) => `${p.x},${p.y}`).join(" ")}
+                fill="none"
+                stroke="#fbbf24"
+                strokeOpacity="0.35"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+              />
+              {/* 선명한 경로선 */}
+              <polyline
+                points={routePoints.map((p) => `${p.x},${p.y}`).join(" ")}
+                fill="none"
+                stroke="#facc15"
+                strokeWidth="0.5"
+                strokeLinejoin="round"
+                markerMid="url(#route-turn)"
+                markerEnd="url(#route-arrow)"
+                vectorEffect="non-scaling-stroke"
+              />
+              <circle cx={routePoints[0].x} cy={routePoints[0].y} r="1.1" fill="#22c55e" stroke="#0c1c3a" strokeWidth="0.4" />
+            </svg>
 
             {/* 연마라인 연결선 (반자동 원통연마 → CNC 원통연마 → CLG 센터리스) */}
             {grindingArrowPath && (
@@ -191,18 +232,20 @@ function ZoneCard({
 
   const isProblem = status === "nonconforming";
   const Icon = ZONE_CATEGORY_ICON[zone.category];
+  const statusStyle = STATUS_ZONE_STYLE[status];
 
   return (
     <button
       onClick={onSelect}
       style={{ gridColumn: zone.gridColumn, gridRow: zone.gridRow }}
       className={clsx(
-        "group relative flex flex-col justify-between overflow-hidden rounded-lg border-y border-r border-l-4 bg-gradient-to-br from-white/[0.04] to-transparent p-1.5 text-left shadow-[0_3px_8px_rgba(0,0,0,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-lg sm:p-2",
-        style.bg,
-        style.accent,
+        "group relative flex flex-col justify-between overflow-hidden rounded-lg border p-1.5 pl-2.5 text-left shadow-[0_3px_8px_rgba(0,0,0,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-lg sm:p-2 sm:pl-3",
+        statusStyle.bg,
+        statusStyle.border,
         isProblem && "ring-2 ring-red-500 animate-pulse"
       )}
     >
+      <span className={clsx("absolute inset-y-0 left-0 w-1", style.accent)} />
       <div className="flex items-start justify-between gap-1">
         <span className="flex items-start gap-1 text-[10px] font-bold leading-tight text-white sm:text-[11px]">
           {Icon && <Icon size={11} className="mt-[1px] shrink-0 text-white/50" />}
@@ -273,6 +316,11 @@ function MapLegend() {
         </span>
         <span className="flex items-center gap-1 text-yellow-400">
           <HelpCircle size={12} /> 도면 판독 확인 필요
+        </span>
+        <span className="flex items-center gap-1.5 text-amber-300">
+          <span className="h-0.5 w-4 rounded-full bg-amber-400" /> 이동 경로 (
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          입구 → 화살표: 진행 방향)
         </span>
         <span className="flex items-center gap-1 text-amber-400">
           <ArrowRight size={12} /> 연결 설비라인: 반자동 원통연마 → CNC 원통연마 → CLG 센터리스

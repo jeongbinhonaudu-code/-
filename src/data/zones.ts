@@ -374,6 +374,20 @@ export const corridorSignage: Record<string, { next: string; direction: "down" |
   "f1-main-corridor": { next: "QA 품질 · 마무리 공정 구역", direction: "down" },
 };
 
+// 전체 동선 안내선 좌표 (격자선 기준 col/row). 3개 통로(가로)를 지도 바깥쪽 벽을
+// 따라 지그재그로 이어 입구부터 마지막 구역까지 하나의 선으로 표시한다.
+// 좌우 끝(col 1, 13)은 지도 테두리에 딱 붙어 잘려 보이지 않도록 살짝 안쪽으로 들여서 배치.
+export const routeWaypoints: { col: number; row: number }[] = [
+  { col: 1.4, row: 1 }, // 입구
+  { col: 1.4, row: 4.5 },
+  { col: 12.6, row: 4.5 }, // 통로1 (메인 통로) 횡단
+  { col: 12.6, row: 11.5 },
+  { col: 1.4, row: 11.5 }, // 통로2 (공장 간 연결 통로) 횡단
+  { col: 1.4, row: 16.5 },
+  { col: 12.6, row: 16.5 }, // 통로3 (메인 통로) 횡단
+  { col: 12.6, row: 22 }, // 종료
+];
+
 export function getZones(): FactoryZone[] {
   return zones;
 }
