@@ -1,0 +1,172 @@
+import { Traveler } from "@/types";
+import { classifyCustomer } from "@/lib/classify";
+
+/**
+ * 사용자가 제공한 확정 집계치 (요구사항 9·10번) — 실제 보유 자료 기준.
+ * 개별 트레블러 원본 PDF가 시스템에 아직 업로드되지 않아, 아래 값은
+ * "제공 자료 기준"으로 표시하며 시스템이 계산한 값이 아니다.
+ */
+export const TRAVELER_ARCHIVE_SUMMARY = {
+  totalPdfFiles: 34,
+  totalPages: 205,
+  totalProductionCases: 27, // 트레블러 번호 기준
+  periodStart: "2021-09",
+  periodEnd: "2024-10",
+  productTypeCount: 17,
+  materialTypeCount: 9,
+  customerBreakdown: { OEM: 10, "현대": 10, "미분류": 7 },
+} as const;
+
+function withCustomer(t: Omit<Traveler, "customer">): Traveler {
+  return { ...t, customer: classifyCustomer(t.productName) };
+}
+
+/**
+ * 예시(데모) 트레블러 목록 — 실제 업로드 전 화면 시연용.
+ * 위 TRAVELER_ARCHIVE_SUMMARY(27건)와는 별개이며 집계에 합산하지 않는다.
+ */
+export const sampleTravelers: Traveler[] = [
+  withCustomer({
+    id: "trv-sample-1",
+    fileName: "예시_H3240_TR0091.pdf",
+    travelerNo: "TR-2024-0091",
+    productName: "H3240",
+    material: "예시) SCM440",
+    quantityMin: 50,
+    quantityMax: 80,
+    startDate: undefined,
+    endDate: undefined,
+    pageCount: 6,
+    ocrVerified: false,
+    includedInAnalysis: false,
+    uploadedBy: "예시) 이품질",
+    uploadedAt: "2026-08-15T09:00:00+09:00",
+    reliability: "sample",
+  }),
+  withCustomer({
+    id: "trv-sample-2",
+    fileName: "예시_H2533_TR0088.pdf",
+    travelerNo: "TR-2024-0088",
+    productName: "H2533",
+    material: "예시) SCM440",
+    quantityMin: 60,
+    quantityMax: 60,
+    startDate: "2024-06-03",
+    endDate: "2024-06-14",
+    pageCount: 5,
+    ocrVerified: true,
+    includedInAnalysis: true,
+    uploadedBy: "예시) 이품질",
+    uploadedAt: "2026-08-14T09:00:00+09:00",
+    reliability: "unverified",
+  }),
+  withCustomer({
+    id: "trv-sample-3",
+    fileName: "예시_8164_TR0075.pdf",
+    travelerNo: "TR-2024-0075",
+    productName: "8164",
+    material: "예시) STS304",
+    quantityMin: 20,
+    quantityMax: 20,
+    startDate: "2024-05-02",
+    endDate: "2024-05-20",
+    pageCount: 7,
+    ocrVerified: true,
+    includedInAnalysis: true,
+    uploadedBy: "예시) 박품질",
+    uploadedAt: "2026-08-10T09:00:00+09:00",
+    reliability: "unverified",
+  }),
+  withCustomer({
+    id: "trv-sample-4",
+    fileName: "예시_DK20_TR0060.pdf",
+    travelerNo: "TR-2024-0060",
+    productName: "DK20",
+    material: "예시) SCM440",
+    quantityMin: 300,
+    quantityMax: 300,
+    startDate: "2024-03-11",
+    endDate: "2024-03-22",
+    pageCount: 4,
+    ocrVerified: true,
+    includedInAnalysis: true,
+    uploadedBy: "예시) 박품질",
+    uploadedAt: "2026-08-01T09:00:00+09:00",
+    reliability: "unverified",
+  }),
+  withCustomer({
+    id: "trv-sample-5",
+    fileName: "예시_KX1_TR0052.pdf",
+    travelerNo: "TR-2024-0052",
+    productName: "KX1",
+    material: "예시) SCM440",
+    quantityMin: 55,
+    quantityMax: 55,
+    startDate: "2024-02-01",
+    endDate: "2024-02-19",
+    pageCount: 6,
+    ocrVerified: true,
+    includedInAnalysis: true,
+    uploadedBy: "예시) 이품질",
+    uploadedAt: "2026-07-20T09:00:00+09:00",
+    reliability: "unverified",
+  }),
+  withCustomer({
+    id: "trv-sample-6",
+    fileName: "예시_DC17_TR0040.pdf",
+    travelerNo: "TR-2024-0040",
+    productName: "DC17",
+    material: "예시) STS304",
+    quantityMin: 40,
+    quantityMax: 40,
+    startDate: "2023-12-05",
+    endDate: "2023-12-30",
+    pageCount: 5,
+    ocrVerified: true,
+    includedInAnalysis: true,
+    uploadedBy: "예시) 박품질",
+    uploadedAt: "2026-07-10T09:00:00+09:00",
+    reliability: "unverified",
+  }),
+  withCustomer({
+    id: "trv-sample-7",
+    fileName: "예시_미분류_TR0031.pdf",
+    travelerNo: "TR-2023-0031",
+    productName: "2210",
+    material: "예시) 확인 필요",
+    quantityMin: undefined,
+    quantityMax: undefined,
+    startDate: undefined,
+    endDate: undefined,
+    pageCount: 8,
+    ocrVerified: false,
+    includedInAnalysis: false,
+    uploadedBy: "예시) 김품질",
+    uploadedAt: "2026-06-28T09:00:00+09:00",
+    reliability: "unverified",
+  }),
+  withCustomer({
+    id: "trv-sample-8",
+    fileName: "예시_H32DF_TR0025_1of2.pdf",
+    travelerNo: "TR-2023-0025",
+    productName: "H32DF",
+    material: "예시) SCM440",
+    quantityMin: 90,
+    quantityMax: 90,
+    startDate: "2023-09-01",
+    endDate: "2023-09-25",
+    pageCount: 4,
+    mergedFileIds: ["trv-sample-8b"],
+    ocrVerified: true,
+    includedInAnalysis: true,
+    uploadedBy: "예시) 이품질",
+    uploadedAt: "2026-06-15T09:00:00+09:00",
+    reliability: "unverified",
+  }),
+];
+
+export const CUSTOMER_COLORS: Record<string, string> = {
+  "현대": "#1d4ed8",
+  OEM: "#0891b2",
+  "미분류": "#94a3b8",
+};
