@@ -354,6 +354,26 @@ export const zones: FactoryZone[] = [
 
 export const GRINDING_LINE_IDS = ["f1-semi-auto-grinding", "f1-cnc-grinding", "f1-clg-centerless"];
 
+// 지도 상단 구역 안내표(걸어서 진입했을 때 첫 안내판 역할) — 별도 여백에 배치
+export interface MapSectionLabel {
+  id: string;
+  order: number;
+  label: string;
+  gridColumn: string;
+}
+export const mapSectionLabels: MapSectionLabel[] = [
+  { id: "sec-1", order: 1, label: "완제품 포장 · CNC/교정 라인", gridColumn: "1 / 9" },
+  { id: "sec-2", order: 2, label: "소재 보관 · 단조 구역", gridColumn: "9 / 13" },
+];
+
+// 통로(안전선) 구역에 표시할 "다음 구역" 안내 — 실제 통로 표지판처럼 이동 방향을 알려준다
+export const corridorSignage: Record<string, { next: string; direction: "down" | "up" }> = {
+  "f2-main-corridor": { next: "교정 · PTA 용접 · 단조/열처리 구역", direction: "down" },
+  "connector-corridor-left": { next: "완제품 창고 · 원통연마 라인", direction: "down" },
+  "connector-corridor-right": { next: "완제품 창고 · 원통연마 라인", direction: "down" },
+  "f1-main-corridor": { next: "QA 품질 · 마무리 공정 구역", direction: "down" },
+};
+
 export function getZones(): FactoryZone[] {
   return zones;
 }
