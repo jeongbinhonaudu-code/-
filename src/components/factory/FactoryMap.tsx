@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Equipment, FactoryZone } from "@/types";
 import { getByZone, getZoneStatus, useEffectiveEquipment } from "@/lib/equipmentOverrides";
-import { GRINDING_LINE_IDS, corridorSignage, mapSectionLabels, routeWaypoints } from "@/data/zones";
+import { GRINDING_LINE_IDS, ZoneCluster, corridorSignage, mapSectionLabels, routeWaypoints, zoneClusters } from "@/data/zones";
 import { STATUS_ZONE_STYLE, ZONE_CATEGORY_STYLE } from "@/lib/zoneStyle";
 import { ZONE_CATEGORY_ICON } from "@/lib/zoneIcons";
 import { QUALITY_RESULT_LABEL, STATUS_LABEL } from "@/lib/labels";
@@ -26,6 +26,11 @@ export function FactoryMap({ zones, fitViewport = false }: { zones: FactoryZone[
   }, [zones]);
 
   const routePoints = useMemo(() => routeWaypoints.map((p) => linePct(p.col, p.row)), []);
+
+  const clusteredZoneIds = useMemo(
+    () => new Set(zoneClusters.flatMap((c) => c.memberZoneIds)),
+    []
+  );
 
   const selectedZone = zones.find((z) => z.id === selectedZoneId) ?? null;
 
@@ -64,11 +69,22 @@ export function FactoryMap({ zones, fitViewport = false }: { zones: FactoryZone[
         />
 
         <div
-          className="relative grid h-full w-full gap-2 p-2 sm:gap-2.5 sm:p-3"
+          className="relative grid h-full w-full gap-2.5 p-2.5 sm:gap-3 sm:p-3.5"
           style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`, gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)` }}
         >
-          {zones.map((zone) => (
-            <ZoneCard key={zone.id} zone={zone} equipmentList={equipment} onSelect={() => setSelectedZoneId(zone.id)} />
+          {zones
+            .filter((zone) => !clusteredZoneIds.has(zone.id))
+            .map((zone) => (
+              <ZoneCard key={zone.id} zone={zone} equipmentList={equipment} onSelect={() => setSelectedZoneId(zone.id)} />
+            ))}
+          {zoneClusters.map((cluster) => (
+            <ClusterCard
+              key={cluster.id}
+              cluster={cluster}
+              zones={zones}
+              equipmentList={equipment}
+              onSelect={setSelectedZoneId}
+            />
           ))}
         </div>
 
@@ -291,7 +307,7 @@ function ZoneCard({
       onClick={onSelect}
       style={{ gridColumn: zone.gridColumn, gridRow: zone.gridRow }}
       className={clsx(
-        "group relative flex flex-col justify-between overflow-hidden rounded-lg border p-1.5 pl-2.5 text-left shadow-[0_3px_8px_rgba(0,0,0,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-lg sm:p-2 sm:pl-3",
+        "group relative flex flex-col justify-between overflow-hidden rounded-md border p-1.5 pl-2.5 text-left transition-all hover:-translate-y-0.5 hover:bg-white/[0.05] sm:p-2 sm:pl-3",
         statusStyle.bg,
         statusStyle.border,
         isProblem && "ring-2 ring-red-500 animate-pulse"
@@ -332,6 +348,61 @@ function ZoneCard({
         </p>
       </div>
     </button>
+  );
+}
+
+// 동일 설비가 여러 대 반복되는 구역을 카드 하나로 묶어서 표시 — 개별 카드를 다
+// 그리면 "네모만 가득한" 느낌이 커지므로, 방 하나 안에 작은 태그들만 모아둔다
+function ClusterCard({
+  cluster,
+  zones,
+  equipmentList,
+  onSelect,
+}: {
+  cluster: ZoneCluster;
+  zones: FactoryZone[];
+  equipmentList: Equipment[];
+  onSelect: (zoneId: string) => void;
+}) {
+  const members = cluster.memberZoneIds
+    .map((id) => zones.find((z) => z.id === id))
+    .filter((z): z is FactoryZone => !!z);
+  const hasProblem = members.some((z) => getZoneStatus(equipmentList, z.id) === "nonconforming");
+  const HeaderIcon = ZONE_CATEGORY_ICON.lathe;
+
+  return (
+    <div
+      style={{ gridColumn: cluster.gridColumn, gridRow: cluster.gridRow }}
+      className={clsx(
+        "relative flex flex-col rounded-lg border border-sky-400/15 bg-[#0e1c38]/50 p-2",
+        hasProblem && "ring-2 ring-red-500"
+      )}
+    >
+      <p className="mb-1.5 flex items-center gap-1 text-[9px] font-bold uppercase tracking-wide text-slate-400 sm:text-[10px]">
+        {HeaderIcon && <HeaderIcon size={10} className="text-slate-500" />} {cluster.name}
+      </p>
+      <div className="grid flex-1 grid-cols-5 gap-1 sm:gap-1.5">
+        {members.map((z) => {
+          const status = getZoneStatus(equipmentList, z.id);
+          const statusStyle = STATUS_ZONE_STYLE[status];
+          return (
+            <button
+              key={z.id}
+              onClick={() => onSelect(z.id)}
+              className={clsx(
+                "flex flex-col items-center justify-center gap-0.5 truncate rounded-md border px-1 py-1.5 text-center transition-transform hover:-translate-y-0.5",
+                statusStyle.bg,
+                statusStyle.border,
+                status === "nonconforming" && "ring-1 ring-red-500"
+              )}
+            >
+              <span className="truncate text-[8px] font-bold leading-tight text-white sm:text-[9px]">{z.name}</span>
+              <StatusDot status={status} />
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

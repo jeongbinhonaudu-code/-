@@ -1,13 +1,14 @@
 import { EquipmentStatus, FactoryZone } from "@/types";
 
-// 참고 도면처럼 카드 본체는 통일된 톤을 쓰고, 테두리 색으로만 "현재 작업 상태"를
-// 표시한다 (카테고리별 무지개색은 좌측 강조선 + 아이콘으로만 보조 표시).
+// 카드 배경은 거의 바닥과 같은 톤으로 통일하고(칸마다 색이 다르면 "네모가 가득한"
+// 느낌이 커짐), 테두리 색으로만 "현재 작업 상태"를 표시한다. 부적합만 예외적으로
+// 살짝 더 진하게 표시해 눈에 띄게 한다.
 export const STATUS_ZONE_STYLE: Record<EquipmentStatus, { bg: string; border: string }> = {
-  running: { bg: "bg-[#122a1f]/70", border: "border-emerald-400/70" },
-  quality_check: { bg: "bg-[#2a2010]/70", border: "border-orange-400/70" },
-  nonconforming: { bg: "bg-[#2a1414]/70", border: "border-red-500/80" },
-  waiting: { bg: "bg-[#16233d]/70", border: "border-slate-500/40" },
-  neutral: { bg: "bg-[#16233d]/70", border: "border-sky-400/30" },
+  running: { bg: "bg-white/[0.025]", border: "border-emerald-400/50" },
+  quality_check: { bg: "bg-white/[0.025]", border: "border-orange-400/60" },
+  nonconforming: { bg: "bg-red-500/[0.07]", border: "border-red-500/70" },
+  waiting: { bg: "bg-white/[0.02]", border: "border-slate-500/30" },
+  neutral: { bg: "bg-white/[0.02]", border: "border-sky-400/20" },
 };
 
 // accent: 카드 좌측 강조선(카테고리 구분용, 좁은 4px 스트라이프) 배경색

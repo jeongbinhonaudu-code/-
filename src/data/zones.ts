@@ -374,6 +374,41 @@ export const corridorSignage: Record<string, { next: string; direction: "down" |
   "f1-main-corridor": { next: "QA 품질 · 마무리 공정 구역", direction: "down" },
 };
 
+// 동일한 종류의 설비가 반복되는 구역(LH 선반 등)은 개별 카드를 다 그리면
+// "네모만 가득한" 느낌이 커진다. 하나의 방(테두리) 안에 작은 태그들만
+// 모아서 보여주도록 묶음(cluster)으로 정의한다.
+export interface ZoneCluster {
+  id: string;
+  name: string;
+  gridColumn: string;
+  gridRow: string;
+  memberZoneIds: string[];
+}
+export const zoneClusters: ZoneCluster[] = [
+  {
+    id: "cluster-lh",
+    name: "LH 선반 · 가공 구역",
+    gridColumn: "1 / 10",
+    gridRow: "8 / 10",
+    memberZoneIds: [
+      "f2-lathe-lh1",
+      "f2-lathe-lh3",
+      "f2-lathe-lh4",
+      "f2-lathe-lh5",
+      "f2-lathe-lh6",
+      "f2-lathe-lh7",
+      "f2-lathe-lh8",
+      "f2-lathe-lh9",
+      "f2-lathe-lh10",
+      "f2-lathe-lh11",
+      "f2-material-cutter",
+      "f2-material-setting",
+      "f2-cnc",
+      "f2-mct",
+    ],
+  },
+];
+
 // 전체 동선 안내선 좌표 (격자선 기준 col/row). 3개 통로(가로)를 지도 바깥쪽 벽을
 // 따라 지그재그로 이어 입구부터 마지막 구역까지 하나의 선으로 표시한다.
 // 좌우 끝(col 1, 13)은 지도 테두리에 딱 붙어 잘려 보이지 않도록 살짝 안쪽으로 들여서 배치.
