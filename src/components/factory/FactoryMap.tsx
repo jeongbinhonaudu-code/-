@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Equipment, FactoryZone } from "@/types";
 import { getByZone, getZoneStatus, useEffectiveEquipment } from "@/lib/equipmentOverrides";
 import { GRINDING_LINE_IDS, corridorSignage, mapSectionLabels, routeWaypoints } from "@/data/zones";
@@ -13,7 +13,7 @@ import { EquipmentPanel } from "@/components/factory/EquipmentPanel";
 import { ArrowRight, ArrowUpDown, Camera, ChevronDown, HelpCircle, Milestone } from "lucide-react";
 import clsx from "clsx";
 
-export function FactoryMap({ zones }: { zones: FactoryZone[] }) {
+export function FactoryMap({ zones, fitViewport = false }: { zones: FactoryZone[]; fitViewport?: boolean }) {
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
   const { equipment, updateEquipment } = useEffectiveEquipment();
 
@@ -29,121 +29,134 @@ export function FactoryMap({ zones }: { zones: FactoryZone[] }) {
 
   const selectedZone = zones.find((z) => z.id === selectedZoneId) ?? null;
 
-  return (
-    <div className="relative">
-      {/* 좁은 화면에서는 칸이 다 찌그러지는 대신 실제 크기를 유지하고 가로로 스크롤한다 */}
-      <div className="-mx-3 overflow-x-auto px-3 pb-1 sm:mx-0 sm:overflow-visible sm:px-0 sm:pb-0">
-        <div className="min-w-[860px] sm:min-w-0">
-          {/* 상단 구역 안내판 — 입구에서 바로 보이는 첫 표지. 아래 지도와 같은 열 폭을 써서 정확히 정렬한다 */}
+  const mapBody = (
+    <>
+      {/* 상단 구역 안내판 — 입구에서 바로 보이는 첫 표지. 아래 지도와 같은 열 폭을 써서 정확히 정렬한다 */}
+      <div
+        className="mb-1.5 grid gap-2 px-2 sm:gap-2.5 sm:px-3"
+        style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)` }}
+      >
+        {mapSectionLabels.map((sec) => (
           <div
-            className="mb-1.5 grid gap-2 px-2 sm:gap-2.5 sm:px-3"
-            style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)` }}
+            key={sec.id}
+            style={{ gridColumn: sec.gridColumn }}
+            className="flex items-center gap-1.5 truncate rounded-full border border-amber-400/40 bg-[#0c1c3a] px-2.5 py-1 text-[9px] font-bold tracking-wide text-amber-200 shadow-lg sm:text-[10px]"
           >
-            {mapSectionLabels.map((sec) => (
-              <div
-                key={sec.id}
-                style={{ gridColumn: sec.gridColumn }}
-                className="flex items-center gap-1.5 truncate rounded-full border border-amber-400/40 bg-[#0c1c3a] px-2.5 py-1 text-[9px] font-bold tracking-wide text-amber-200 shadow-lg sm:text-[10px]"
-              >
-                <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-amber-400 text-[8px] text-[#0c1c3a]">
-                  {sec.order}
-                </span>
-                <span className="truncate">{sec.label}</span>
-              </div>
-            ))}
+            <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-amber-400 text-[8px] text-[#0c1c3a]">
+              {sec.order}
+            </span>
+            <span className="truncate">{sec.label}</span>
           </div>
-
-          <div
-            className="relative w-full overflow-hidden rounded-2xl border border-slate-700 bg-gradient-to-br from-[#0c1f3f] to-[#0a1730] shadow-2xl"
-            style={{ aspectRatio: `${GRID_COLS} / ${GRID_ROWS}` }}
-          >
-            {/* 바닥 비네트(격자무늬 대신 은은한 명암으로 "도면"보다는 "실내 바닥" 느낌) */}
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,0.05), transparent 55%), radial-gradient(120% 90% at 50% 100%, rgba(0,0,0,0.25), transparent 60%)",
-              }}
-            />
-
-            <div
-              className="relative grid h-full w-full gap-2 p-2 sm:gap-2.5 sm:p-3"
-              style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`, gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)` }}
-            >
-              {zones.map((zone) => (
-                <ZoneCard key={zone.id} zone={zone} equipmentList={equipment} onSelect={() => setSelectedZoneId(zone.id)} />
-              ))}
-            </div>
-
-            {/* 전체 동선 안내선 — 입구부터 마지막 구역까지, 참고 도면의 노란 경로선처럼
-                지도 바깥 벽과 3개 통로를 따라 하나로 이어 그린다 */}
-            <svg
-              className="pointer-events-none absolute inset-0 h-full w-full"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <marker id="route-arrow" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto">
-                  <path d="M0,0 L5,2.5 L0,5 Z" fill="#fbbf24" />
-                </marker>
-                <marker id="route-turn" markerWidth="3" markerHeight="3" refX="1.5" refY="1.5">
-                  <circle cx="1.5" cy="1.5" r="1.3" fill="#fde68a" stroke="#0c1c3a" strokeWidth="0.4" />
-                </marker>
-              </defs>
-              {/* 은은한 글로우 레이어 */}
-              <polyline
-                points={routePoints.map((p) => `${p.x},${p.y}`).join(" ")}
-                fill="none"
-                stroke="#fbbf24"
-                strokeOpacity="0.35"
-                strokeWidth="1.6"
-                strokeLinejoin="round"
-                vectorEffect="non-scaling-stroke"
-              />
-              {/* 선명한 경로선 */}
-              <polyline
-                points={routePoints.map((p) => `${p.x},${p.y}`).join(" ")}
-                fill="none"
-                stroke="#facc15"
-                strokeWidth="0.5"
-                strokeLinejoin="round"
-                markerMid="url(#route-turn)"
-                markerEnd="url(#route-arrow)"
-                vectorEffect="non-scaling-stroke"
-              />
-              <circle cx={routePoints[0].x} cy={routePoints[0].y} r="1.1" fill="#22c55e" stroke="#0c1c3a" strokeWidth="0.4" />
-            </svg>
-
-            {/* 연마라인 연결선 (반자동 원통연마 → CNC 원통연마 → CLG 센터리스) */}
-            {grindingArrowPath && (
-              <svg
-                className="pointer-events-none absolute inset-0 h-full w-full"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-              >
-                <defs>
-                  <marker id="arrowhead" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto">
-                    <path d="M0,0 L4,2 L0,4 Z" fill="#fbbf24" />
-                  </marker>
-                </defs>
-                <polyline
-                  points={grindingArrowPath.map((p) => `${p.x},${p.y - 0.3}`).join(" ")}
-                  fill="none"
-                  stroke="#fbbf24"
-                  strokeWidth="0.35"
-                  strokeDasharray="1.4 1"
-                  markerEnd="url(#arrowhead)"
-                  vectorEffect="non-scaling-stroke"
-                />
-              </svg>
-            )}
-          </div>
-        </div>
+        ))}
       </div>
 
-      <p className="mt-1.5 text-center text-[10px] text-slate-500 sm:hidden">← 좌우로 밀어서 전체 구역을 확인하세요 →</p>
+      <div
+        className="relative w-full overflow-hidden rounded-2xl border border-slate-700 bg-gradient-to-br from-[#0c1f3f] to-[#0a1730] shadow-2xl"
+        style={{ aspectRatio: `${GRID_COLS} / ${GRID_ROWS}` }}
+      >
+        {/* 바닥 비네트(격자무늬 대신 은은한 명암으로 "도면"보다는 "실내 바닥" 느낌) */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,0.05), transparent 55%), radial-gradient(120% 90% at 50% 100%, rgba(0,0,0,0.25), transparent 60%)",
+          }}
+        />
 
-      <MapLegend />
+        <div
+          className="relative grid h-full w-full gap-2 p-2 sm:gap-2.5 sm:p-3"
+          style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`, gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)` }}
+        >
+          {zones.map((zone) => (
+            <ZoneCard key={zone.id} zone={zone} equipmentList={equipment} onSelect={() => setSelectedZoneId(zone.id)} />
+          ))}
+        </div>
+
+        {/* 전체 동선 안내선 — 입구부터 마지막 구역까지, 참고 도면의 노란 경로선처럼
+            지도 바깥 벽과 3개 통로를 따라 하나로 이어 그린다 */}
+        <svg
+          className="pointer-events-none absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <marker id="route-arrow" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto">
+              <path d="M0,0 L5,2.5 L0,5 Z" fill="#fbbf24" />
+            </marker>
+            <marker id="route-turn" markerWidth="3" markerHeight="3" refX="1.5" refY="1.5">
+              <circle cx="1.5" cy="1.5" r="1.3" fill="#fde68a" stroke="#0c1c3a" strokeWidth="0.4" />
+            </marker>
+          </defs>
+          {/* 은은한 글로우 레이어 */}
+          <polyline
+            points={routePoints.map((p) => `${p.x},${p.y}`).join(" ")}
+            fill="none"
+            stroke="#fbbf24"
+            strokeOpacity="0.35"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+          />
+          {/* 선명한 경로선 */}
+          <polyline
+            points={routePoints.map((p) => `${p.x},${p.y}`).join(" ")}
+            fill="none"
+            stroke="#facc15"
+            strokeWidth="0.5"
+            strokeLinejoin="round"
+            markerMid="url(#route-turn)"
+            markerEnd="url(#route-arrow)"
+            vectorEffect="non-scaling-stroke"
+          />
+          <circle cx={routePoints[0].x} cy={routePoints[0].y} r="1.1" fill="#22c55e" stroke="#0c1c3a" strokeWidth="0.4" />
+        </svg>
+
+        {/* 연마라인 연결선 (반자동 원통연마 → CNC 원통연마 → CLG 센터리스) */}
+        {grindingArrowPath && (
+          <svg
+            className="pointer-events-none absolute inset-0 h-full w-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <marker id="arrowhead" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto">
+                <path d="M0,0 L4,2 L0,4 Z" fill="#fbbf24" />
+              </marker>
+            </defs>
+            <polyline
+              points={grindingArrowPath.map((p) => `${p.x},${p.y - 0.3}`).join(" ")}
+              fill="none"
+              stroke="#fbbf24"
+              strokeWidth="0.35"
+              strokeDasharray="1.4 1"
+              markerEnd="url(#arrowhead)"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+        )}
+      </div>
+    </>
+  );
+
+  return (
+    <div className={clsx("relative", fitViewport && "flex h-full flex-col")}>
+      {fitViewport ? (
+        <div className="min-h-0 flex-1">
+          <FitToViewport>{mapBody}</FitToViewport>
+        </div>
+      ) : (
+        <>
+          {/* 좁은 화면에서는 칸이 다 찌그러지는 대신 실제 크기를 유지하고 가로로 스크롤한다 */}
+          <div className="-mx-3 overflow-x-auto px-3 pb-1 sm:mx-0 sm:overflow-visible sm:px-0 sm:pb-0">
+            <div className="min-w-[860px] sm:min-w-0">{mapBody}</div>
+          </div>
+          <p className="mt-1.5 text-center text-[10px] text-slate-500 sm:hidden">
+            ← 좌우로 밀어서 전체 구역을 확인하세요 →
+          </p>
+        </>
+      )}
+
+      <MapLegend collapsible={fitViewport} />
 
       {selectedZone && (
         <EquipmentPanel
@@ -153,6 +166,45 @@ export function FactoryMap({ zones }: { zones: FactoryZone[] }) {
           onClose={() => setSelectedZoneId(null)}
         />
       )}
+    </div>
+  );
+}
+
+// 컨테이너 크기에 맞춰 내용 전체를 축소/확대해 스크롤 없이 한 화면에 보이게 한다
+function FitToViewport({ children }: { children: React.ReactNode }) {
+  const BASE_WIDTH = 900;
+  const outerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [naturalHeight, setNaturalHeight] = useState(0);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    if (contentRef.current) setNaturalHeight(contentRef.current.offsetHeight);
+  }, [children]);
+
+  useEffect(() => {
+    const el = outerRef.current;
+    if (!el || !naturalHeight) return;
+    const compute = () => {
+      const s = Math.min(el.clientWidth / BASE_WIDTH, el.clientHeight / naturalHeight);
+      setScale(Number.isFinite(s) && s > 0 ? Math.min(s, 1.4) : 1);
+    };
+    compute();
+    const ro = new ResizeObserver(compute);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [naturalHeight]);
+
+  return (
+    <div ref={outerRef} className="relative h-full w-full overflow-hidden">
+      <div
+        className="absolute left-1/2 top-0"
+        style={{ width: BASE_WIDTH * scale, height: naturalHeight * scale, transform: "translateX(-50%)" }}
+      >
+        <div ref={contentRef} style={{ width: BASE_WIDTH, transform: `scale(${scale})`, transformOrigin: "top left" }}>
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
@@ -283,7 +335,7 @@ function ZoneCard({
   );
 }
 
-function MapLegend() {
+function MapLegend({ collapsible = false }: { collapsible?: boolean }) {
   const items: { status: keyof typeof STATUS_LABEL }[] = [
     { status: "running" },
     { status: "quality_check" },
@@ -291,8 +343,9 @@ function MapLegend() {
     { status: "waiting" },
     { status: "neutral" },
   ];
-  return (
-    <div className="mt-3 space-y-2 rounded-xl border border-white/10 bg-[#101c33] px-4 py-2.5 text-xs shadow-sm">
+
+  const body = (
+    <div className="space-y-2 text-xs">
       <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-slate-300">
         <Milestone size={12} className="shrink-0 text-amber-400" />
         <span className="font-semibold text-amber-200">동선 순서</span>
@@ -331,6 +384,19 @@ function MapLegend() {
       </div>
     </div>
   );
+
+  if (collapsible) {
+    return (
+      <details className="mt-2 shrink-0 rounded-xl border border-white/10 bg-[#101c33] px-4 py-2 text-xs shadow-sm">
+        <summary className="cursor-pointer select-none font-semibold text-amber-200">
+          범례·동선 안내 보기
+        </summary>
+        <div className="mt-2">{body}</div>
+      </details>
+    );
+  }
+
+  return <div className="mt-3 rounded-xl border border-white/10 bg-[#101c33] px-4 py-2.5 shadow-sm">{body}</div>;
 }
 
 const ROUTE_ORDER = [
