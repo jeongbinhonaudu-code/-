@@ -9,7 +9,7 @@ import { TravelerUpload } from "@/components/travelers/TravelerUpload";
 import { TravelerList } from "@/components/travelers/TravelerList";
 
 export function TravelerPageClient() {
-  const { items, add, update } = usePersistedList<Traveler>("travelers", sampleTravelers);
+  const { items, add, update, remove } = usePersistedList<Traveler>("travelers", sampleTravelers);
 
   function handleFiles(files: File[]) {
     files.forEach((file) => {
@@ -31,6 +31,38 @@ export function TravelerPageClient() {
 
   function handleUpdate(id: string, updater: (t: Traveler) => Traveler) {
     update((t) => t.id === id, updater);
+  }
+
+  function handleMergeGroup(travelerNo: string) {
+    const group = items
+      .filter((t) => t.travelerNo === travelerNo)
+      .sort((a, b) => new Date(a.uploadedAt).getTime() - new Date(b.uploadedAt).getTime());
+    if (group.length < 2) return;
+    const [primary, ...others] = group;
+
+    if (
+      !window.confirm(
+        `트레블러 번호 "${travelerNo}" 파일 ${group.length}개를 하나의 생산 건으로 병합합니다.\n` +
+          `- 대표 건: ${primary.fileName} (가장 먼저 업로드됨)\n` +
+          `- 병합 대상: ${others.map((o) => o.fileName).join(", ")}\n` +
+          `병합 후 병합된 개별 파일 항목은 목록에서 제거됩니다. 계속할까요?`
+      )
+    ) {
+      return;
+    }
+
+    const mergedIds = [...(primary.mergedFileIds ?? []), ...others.flatMap((o) => [o.id, ...(o.mergedFileIds ?? [])])];
+    const totalPages = [primary, ...others].reduce((sum, t) => sum + (t.pageCount ?? 0), 0);
+
+    update((t) => t.id === primary.id, (t) => ({
+      ...t,
+      pageCount: totalPages || undefined,
+      mergedFileIds: mergedIds,
+      material: t.material ?? others.find((o) => o.material)?.material,
+      startDate: t.startDate ?? others.find((o) => o.startDate)?.startDate,
+      endDate: t.endDate ?? others.find((o) => o.endDate)?.endDate,
+    }));
+    remove((t) => others.some((o) => o.id === t.id));
   }
 
   const list = items;
@@ -62,7 +94,7 @@ export function TravelerPageClient() {
           </p>
         </details>
 
-        <TravelerList travelers={list} onUpdate={handleUpdate} />
+        <TravelerList travelers={list} onUpdate={handleUpdate} onMergeGroup={handleMergeGroup} />
       </div>
     </div>
   );

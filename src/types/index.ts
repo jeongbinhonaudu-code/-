@@ -45,6 +45,17 @@ export interface Equipment {
   note?: string;
 }
 
+/** 생산팀이 입력한 설비 상태 변경분 (기준 설비 데이터 위에 덮어씀) */
+export interface EquipmentOverride {
+  equipmentId: string;
+  status: EquipmentStatus;
+  currentProduct?: string;
+  currentTravelerNo?: string;
+  currentQuantity?: number;
+  updatedBy: string;
+  updatedAt: string;
+}
+
 export interface FactoryZone {
   id: string;
   factoryId: FactoryId;

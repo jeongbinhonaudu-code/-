@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { equipmentList } from "@/data/equipment";
+import { useEffectiveEquipment } from "@/lib/equipmentOverrides";
 import { getZonesByFactory } from "@/data/zones";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { QualityResultBadge } from "@/components/ui/QualityResultBadge";
@@ -15,6 +15,7 @@ function zoneName(zoneId: string) {
 }
 
 export default function EquipmentPage() {
+  const { equipment: equipmentList } = useEffectiveEquipment();
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -25,7 +26,7 @@ export default function EquipmentPage() {
       const q = query.toLowerCase();
       return e.name.toLowerCase().includes(q) || zoneName(e.zoneId).toLowerCase().includes(q);
     });
-  }, [query, statusFilter]);
+  }, [equipmentList, query, statusFilter]);
 
   return (
     <div className="mx-auto max-w-[1400px] px-3 py-4 sm:px-4 sm:py-6">

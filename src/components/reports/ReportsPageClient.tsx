@@ -4,7 +4,7 @@ import { usePersistedList } from "@/lib/storage";
 import { sampleQualityInspections } from "@/data/qualityInspections";
 import { sampleTravelers } from "@/data/travelers";
 import { QualityInspection, Traveler } from "@/types";
-import { equipmentList } from "@/data/equipment";
+import { useEffectiveEquipment } from "@/lib/equipmentOverrides";
 import { getZonesByFactory } from "@/data/zones";
 import { downloadCsv } from "@/lib/csv";
 import { formatDateTime } from "@/lib/format";
@@ -21,6 +21,7 @@ export function ReportsPageClient() {
     sampleQualityInspections
   );
   const { items: travelers } = usePersistedList<Traveler>("travelers", sampleTravelers);
+  const { equipment: equipmentList } = useEffectiveEquipment();
 
   const cards = [
     {

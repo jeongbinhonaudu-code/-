@@ -15,9 +15,11 @@ const CUSTOMER_BADGE: Record<CustomerCategory, string> = {
 export function TravelerList({
   travelers,
   onUpdate,
+  onMergeGroup,
 }: {
   travelers: Traveler[];
   onUpdate: (id: string, updater: (t: Traveler) => Traveler) => void;
+  onMergeGroup: (travelerNo: string) => void;
 }) {
   const [query, setQuery] = useState("");
   const [customerFilter, setCustomerFilter] = useState<string>("all");
@@ -106,7 +108,16 @@ export function TravelerList({
                   <td className="whitespace-nowrap px-3 py-2 font-medium">
                     {t.travelerNo || <span className="text-slate-300">입력 필요</span>}
                     {duplicateNos.has(t.travelerNo) && t.travelerNo && (
-                      <span className="ml-1 rounded bg-yellow-200 px-1 text-[10px] text-yellow-800">중복 의심</span>
+                      <>
+                        <span className="ml-1 rounded bg-yellow-200 px-1 text-[10px] text-yellow-800">중복 의심</span>
+                        <button
+                          onClick={() => onMergeGroup(t.travelerNo)}
+                          className="ml-1 inline-flex items-center gap-0.5 rounded border border-sky-300 bg-sky-50 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700 hover:bg-sky-100"
+                          title="동일 번호 분할 PDF를 하나의 생산 건으로 병합"
+                        >
+                          <Combine size={9} /> 분할 PDF 병합
+                        </button>
+                      </>
                     )}
                     {t.mergedFileIds && t.mergedFileIds.length > 0 && (
                       <span className="ml-1 inline-flex items-center gap-0.5 rounded bg-slate-200 px-1 text-[10px] text-slate-600">

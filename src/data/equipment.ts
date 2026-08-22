@@ -321,17 +321,3 @@ export const equipmentList: Equipment[] = [
     note: PHOTO_NOT_TAKEN,
   })),
 ];
-
-export function getEquipmentByZone(zoneId: string): Equipment[] {
-  return equipmentList.filter((e) => e.zoneId === zoneId);
-}
-
-export function getEquipmentZoneStatus(zoneId: string): Equipment["status"] {
-  const items = getEquipmentByZone(zoneId);
-  if (items.length === 0) return "neutral";
-  if (items.some((e) => e.status === "nonconforming")) return "nonconforming";
-  if (items.some((e) => e.status === "quality_check")) return "quality_check";
-  if (items.some((e) => e.status === "running")) return "running";
-  if (items.every((e) => e.status === "waiting")) return "waiting";
-  return "neutral";
-}

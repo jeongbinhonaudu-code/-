@@ -1,9 +1,13 @@
-import { equipmentList } from "@/data/equipment";
+"use client";
+
+import { useEffectiveEquipment } from "@/lib/equipmentOverrides";
 import { DataBadge } from "@/components/ui/DataBadge";
 import { formatDateTime } from "@/lib/format";
 import { Boxes, PackageSearch, AlertTriangle, ShieldAlert, ClipboardCheck, Clock } from "lucide-react";
 
 export function SummaryBar() {
+  const { equipment: equipmentList, overrides } = useEffectiveEquipment();
+
   const registeredEquipment = equipmentList.length;
   const inProgressProducts = new Set(
     equipmentList.filter((e) => e.currentProduct).map((e) => e.currentProduct)
@@ -13,8 +17,10 @@ export function SummaryBar() {
     (e) => e.lastQualityResult === "nonconforming" || e.status === "nonconforming"
   ).length;
   const notYetInspected = equipmentList.filter((e) => !e.lastInspectionAt).length;
-  const lastUpdated = equipmentList
-    .map((e) => e.lastInspectionAt)
+  const lastUpdated = [
+    ...equipmentList.map((e) => e.lastInspectionAt),
+    ...overrides.map((o) => o.updatedAt),
+  ]
     .filter((v): v is string => !!v)
     .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
 
@@ -56,7 +62,7 @@ export function SummaryBar() {
           <p className="text-xs font-bold leading-tight text-slate-900">
             {lastUpdated ? formatDateTime(lastUpdated) : "확인 필요"}
           </p>
-          <DataBadge reliability="sample" className="mt-1" />
+          <DataBadge reliability={overrides.length > 0 ? "confirmed" : "sample"} className="mt-1" />
         </div>
       </div>
     </div>

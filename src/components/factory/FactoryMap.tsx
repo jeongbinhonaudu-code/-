@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { FactoryZone } from "@/types";
-import { getEquipmentByZone, getEquipmentZoneStatus } from "@/data/equipment";
+import { Equipment, FactoryZone } from "@/types";
+import { getByZone, getZoneStatus, useEffectiveEquipment } from "@/lib/equipmentOverrides";
 import { GRINDING_LINE_IDS } from "@/data/zones";
 import { ZONE_CATEGORY_STYLE } from "@/lib/zoneStyle";
-import { STATUS_LABEL } from "@/lib/labels";
+import { QUALITY_RESULT_LABEL, STATUS_LABEL } from "@/lib/labels";
 import { zoneTopCenterPct } from "@/lib/gridGeometry";
 import { StatusDot } from "@/components/ui/StatusBadge";
 import { EquipmentPanel } from "@/components/factory/EquipmentPanel";
@@ -14,6 +14,7 @@ import clsx from "clsx";
 
 export function FactoryMap({ factoryId, zones }: { factoryId: "factory1" | "factory2"; zones: FactoryZone[] }) {
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
+  const { equipment, updateEquipment } = useEffectiveEquipment();
 
   const grindingArrowPath = useMemo(() => {
     const line = GRINDING_LINE_IDS.map((id) => zones.find((z) => z.id === id)).filter(
@@ -62,7 +63,7 @@ export function FactoryMap({ factoryId, zones }: { factoryId: "factory1" | "fact
           style={{ gridTemplateColumns: "repeat(12, 1fr)", gridTemplateRows: "repeat(10, 1fr)" }}
         >
           {zones.map((zone) => (
-            <ZoneCard key={zone.id} zone={zone} onSelect={() => setSelectedZoneId(zone.id)} />
+            <ZoneCard key={zone.id} zone={zone} equipmentList={equipment} onSelect={() => setSelectedZoneId(zone.id)} />
           ))}
         </div>
 
@@ -94,16 +95,29 @@ export function FactoryMap({ factoryId, zones }: { factoryId: "factory1" | "fact
       <MapLegend />
 
       {selectedZone && (
-        <EquipmentPanel zone={selectedZone} onClose={() => setSelectedZoneId(null)} />
+        <EquipmentPanel
+          zone={selectedZone}
+          equipmentList={getByZone(equipment, selectedZone.id)}
+          onUpdateEquipment={updateEquipment}
+          onClose={() => setSelectedZoneId(null)}
+        />
       )}
     </div>
   );
 }
 
-function ZoneCard({ zone, onSelect }: { zone: FactoryZone; onSelect: () => void }) {
+function ZoneCard({
+  zone,
+  equipmentList,
+  onSelect,
+}: {
+  zone: FactoryZone;
+  equipmentList: Equipment[];
+  onSelect: () => void;
+}) {
   const style = ZONE_CATEGORY_STYLE[zone.category];
-  const equipment = getEquipmentByZone(zone.id);
-  const status = getEquipmentZoneStatus(zone.id);
+  const equipment = getByZone(equipmentList, zone.id);
+  const status = getZoneStatus(equipmentList, zone.id);
   const statusCfg = STATUS_LABEL[status];
 
   if (zone.category === "corridor") {
@@ -157,7 +171,7 @@ function ZoneCard({ zone, onSelect }: { zone: FactoryZone; onSelect: () => void 
           <div className="mt-1.5 space-y-0.5 text-[11px] text-slate-300">
             <p>현재 제품: {equipment[0].currentProduct ?? "확인 필요"}</p>
             <p>작업 수량: {equipment[0].currentQuantity ?? "확인 필요"}</p>
-            <p>최근 품질결과: {STATUS_LABEL[equipment[0].status].text}</p>
+            <p>최근 품질결과: {QUALITY_RESULT_LABEL[equipment[0].lastQualityResult ?? "unchecked"].text}</p>
           </div>
         )}
         <p className={clsx("mt-1.5 inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold", statusCfg.className)}>
