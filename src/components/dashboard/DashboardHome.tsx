@@ -7,7 +7,6 @@ import { usePersistedList } from "@/lib/storage";
 import { sampleQualityInspections } from "@/data/qualityInspections";
 import { QualityInspection } from "@/types";
 import { SummaryBar } from "@/components/layout/SummaryBar";
-import { FactoryMap } from "@/components/factory/FactoryMap";
 import { MonthlyProductionChart } from "@/components/analysis/MonthlyProductionChart";
 import { QualityGauge } from "@/components/dashboard/QualityGauge";
 import { ZoneProductionList } from "@/components/dashboard/ZoneProductionList";
@@ -48,9 +47,9 @@ export function DashboardHome() {
         </p>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-[280px_1fr_320px]">
+      <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
         {/* 좌측: 품질 합격률 게이지 + 구역별 진행 수량 */}
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="rounded-xl border border-[#e5e7eb] bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
             <div className="mb-2 flex items-center justify-between">
               <h2 className="text-sm font-bold text-[#111827]">품질 합격률</h2>
@@ -71,11 +70,6 @@ export function DashboardHome() {
           <div className="rounded-xl border border-[#e5e7eb] bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
             <ZoneProductionList equipment={equipment} zones={zones} />
           </div>
-        </div>
-
-        {/* 중앙: 공장 조감도 */}
-        <div className="rounded-xl border border-[#e5e7eb] bg-white p-3 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
-          <FactoryMap zones={zones} />
         </div>
 
         {/* 우측: 검사종류별 발생 현황 */}
