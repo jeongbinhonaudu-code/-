@@ -26,6 +26,21 @@ h1 {
   letter-spacing: -0.01em;
 }
 
+/* 조감도 동선 안내선이 은은하게 흐르는 느낌을 주는 애니메이션 */
+@keyframes route-flow {
+  to {
+    stroke-dashoffset: -13.8;
+  }
+}
+.route-flow {
+  animation: route-flow 2.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-flow {
+    animation: none;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

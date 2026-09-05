@@ -3,12 +3,34 @@ import { EquipmentStatus, FactoryZone } from "@/types";
 // 카드 배경은 거의 바닥과 같은 톤으로 통일하고(칸마다 색이 다르면 "네모가 가득한"
 // 느낌이 커짐), 테두리 색으로만 "현재 작업 상태"를 표시한다. 부적합만 예외적으로
 // 살짝 더 진하게 표시해 눈에 띄게 한다.
-export const STATUS_ZONE_STYLE: Record<EquipmentStatus, { bg: string; border: string }> = {
-  running: { bg: "bg-white/[0.025]", border: "border-emerald-400/50" },
-  quality_check: { bg: "bg-white/[0.025]", border: "border-orange-400/60" },
-  nonconforming: { bg: "bg-red-500/[0.07]", border: "border-red-500/70" },
-  waiting: { bg: "bg-white/[0.02]", border: "border-slate-500/30" },
-  neutral: { bg: "bg-white/[0.02]", border: "border-sky-400/20" },
+// glow: 상태별로 은은하게 색이 도는 그림자 (검정 그림자 대신 배경색과 어울리는
+// 톤을 써서 카드가 유리판처럼 살짝 떠 보이게 함 — "고급스러운" 재질감의 핵심)
+export const STATUS_ZONE_STYLE: Record<EquipmentStatus, { bg: string; border: string; glow: string }> = {
+  running: {
+    bg: "bg-white/[0.025]",
+    border: "border-emerald-400/50",
+    glow: "shadow-[0_1px_0_rgba(255,255,255,0.07)_inset,0_10px_24px_-16px_rgba(16,185,129,0.5)]",
+  },
+  quality_check: {
+    bg: "bg-white/[0.025]",
+    border: "border-orange-400/60",
+    glow: "shadow-[0_1px_0_rgba(255,255,255,0.07)_inset,0_10px_24px_-16px_rgba(251,146,60,0.5)]",
+  },
+  nonconforming: {
+    bg: "bg-red-500/[0.07]",
+    border: "border-red-500/70",
+    glow: "shadow-[0_1px_0_rgba(255,255,255,0.07)_inset,0_10px_26px_-14px_rgba(239,68,68,0.6)]",
+  },
+  waiting: {
+    bg: "bg-white/[0.02]",
+    border: "border-slate-500/30",
+    glow: "shadow-[0_1px_0_rgba(255,255,255,0.05)_inset,0_8px_20px_-16px_rgba(0,0,0,0.6)]",
+  },
+  neutral: {
+    bg: "bg-white/[0.02]",
+    border: "border-sky-400/20",
+    glow: "shadow-[0_1px_0_rgba(255,255,255,0.06)_inset,0_8px_20px_-16px_rgba(56,189,248,0.35)]",
+  },
 };
 
 // accent: 카드 좌측 강조선(카테고리 구분용, 좁은 4px 스트라이프) 배경색
