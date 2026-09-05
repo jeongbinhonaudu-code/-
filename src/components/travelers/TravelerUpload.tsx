@@ -46,7 +46,7 @@ export function TravelerUpload({ onFiles }: { onFiles: (files: File[]) => void }
         onClick={() => inputRef.current?.click()}
         className={
           "flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-colors " +
-          (dragging ? "border-sky-400 bg-sky-500/10" : "border-white/15 bg-white/5 hover:bg-white/5")
+          (dragging ? "border-sky-400 bg-sky-500/10" : "border-[#e5e7eb] bg-slate-50 hover:bg-slate-50")
         }
       >
         <UploadCloud className="mb-2 text-slate-400" size={28} />
@@ -61,7 +61,7 @@ export function TravelerUpload({ onFiles }: { onFiles: (files: File[]) => void }
           onChange={(e) => process(e.target.files)}
         />
       </div>
-      {error && <p className="mt-2 text-xs text-red-300">{error}</p>}
+      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
       <p className="mt-2 text-[11px] text-slate-400">
         ※ 업로드 후 트레블러 번호·제품명·재질·수량·시작일·완료일은 OCR 자동인식을 시뮬레이션하지 않고 담당자가 원본과
         대조하여 직접 입력·검증합니다 (OCR 엔진 연동은 2단계 구현 예정).

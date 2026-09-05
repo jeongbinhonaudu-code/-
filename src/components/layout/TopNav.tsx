@@ -4,18 +4,31 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import clsx from "clsx";
-import { Factory, Menu, X, ChevronDown } from "lucide-react";
+import {
+  Factory,
+  Menu,
+  X,
+  ChevronDown,
+  LayoutGrid,
+  Map,
+  ShieldCheck,
+  FileStack,
+  BarChart3,
+  Sparkles,
+  Bell,
+  Settings,
+} from "lucide-react";
 
 const primaryLinks = [
-  { href: "/", label: "대시보드" },
-  { href: "/factory", label: "공장 조감도" },
-  { href: "/quality", label: "품질 순회점검" },
-  { href: "/travelers", label: "트레블러 관리" },
-  { href: "/analysis", label: "생산 분석" },
-  { href: "/simulation", label: "시뮬레이션" },
+  { href: "/", label: "대시보드", icon: LayoutGrid },
+  { href: "/factory", label: "공장 조감도", icon: Map },
+  { href: "/quality", label: "품질 순회점검", icon: ShieldCheck },
+  { href: "/travelers", label: "트레블러 관리", icon: FileStack },
+  { href: "/analysis", label: "생산 분석", icon: BarChart3 },
 ];
 
 const moreLinks = [
+  { href: "/simulation", label: "시뮬레이션" },
   { href: "/equipment", label: "설비현황" },
   { href: "/products", label: "진행제품" },
   { href: "/defects", label: "불량·재작업" },
@@ -33,29 +46,30 @@ export function TopNav() {
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname?.startsWith(href));
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-800 bg-[#0b1a33]/95 backdrop-blur supports-[backdrop-filter]:bg-[#0b1a33]/90">
-      <div className="mx-auto flex h-14 max-w-[1600px] items-center gap-3 px-3 sm:px-4">
+    <header className="sticky top-0 z-40 border-b border-[#e5e7eb] bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90">
+      <div className="mx-auto flex h-16 max-w-[1920px] items-center gap-3 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-sky-500/20 text-sky-400">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#111827] text-white">
             <Factory size={18} />
           </span>
-          <span className="hidden text-sm font-bold tracking-tight text-white sm:block">
+          <span className="hidden text-[15px] font-bold tracking-tight text-[#111827] sm:block">
             공정·품질 통합 관제
           </span>
         </Link>
 
-        <nav className="hidden flex-1 items-center gap-1 overflow-x-auto lg:flex">
+        <nav className="ml-2 hidden flex-1 items-center gap-1 overflow-x-auto rounded-2xl bg-[#f1f3f5] p-1 lg:flex">
           {primaryLinks.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               className={clsx(
-                "whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3.5 py-2 text-sm font-semibold transition-all",
                 isActive(l.href)
-                  ? "bg-sky-500/20 text-sky-300"
-                  : "text-slate-300 hover:bg-white/5 hover:text-white"
+                  ? "bg-white text-[#111827] shadow-sm"
+                  : "text-[#64748b] hover:bg-white/60 hover:text-[#111827]"
               )}
             >
+              <l.icon size={15} />
               {l.label}
             </Link>
           ))}
@@ -63,17 +77,17 @@ export function TopNav() {
             <button
               onClick={() => setMoreOpen((v) => !v)}
               onBlur={() => setTimeout(() => setMoreOpen(false), 150)}
-              className="flex items-center gap-1 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white"
+              className="flex items-center gap-1 whitespace-nowrap rounded-xl px-3.5 py-2 text-sm font-semibold text-[#64748b] hover:bg-white/60 hover:text-[#111827]"
             >
               더보기 <ChevronDown size={14} />
             </button>
             {moreOpen && (
-              <div className="absolute right-0 top-full mt-1 w-48 rounded-lg border border-slate-700 bg-[#0f2244] py-1 shadow-xl">
+              <div className="absolute left-0 top-full mt-1.5 w-48 rounded-xl border border-[#e5e7eb] bg-white py-1 shadow-lg">
                 {moreLinks.map((l) => (
                   <Link
                     key={l.href}
                     href={l.href}
-                    className="block px-3 py-2 text-sm text-slate-200 hover:bg-white/5"
+                    className="block px-3 py-2 text-sm font-medium text-[#334155] hover:bg-[#f1f5f9]"
                   >
                     {l.label}
                   </Link>
@@ -83,10 +97,19 @@ export function TopNav() {
           </div>
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5">
+          <IconButton active title="AI 인사이트">
+            <Sparkles size={16} />
+          </IconButton>
+          <IconButton title="알림">
+            <Bell size={16} />
+          </IconButton>
+          <IconButton title="설정">
+            <Settings size={16} />
+          </IconButton>
           <UserMenu />
           <button
-            className="rounded-md p-2 text-slate-200 lg:hidden"
+            className="rounded-xl p-2 text-[#334155] lg:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label="메뉴 열기"
           >
@@ -96,16 +119,16 @@ export function TopNav() {
       </div>
 
       {open && (
-        <nav className="border-t border-slate-800 bg-[#0b1a33] px-3 py-2 lg:hidden">
+        <nav className="border-t border-[#e5e7eb] bg-white px-3 py-2 lg:hidden">
           <div className="grid grid-cols-2 gap-1">
-            {[...primaryLinks, ...moreLinks].map((l) => (
+            {[...primaryLinks.map((l) => ({ href: l.href, label: l.label })), ...moreLinks].map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
                 className={clsx(
-                  "rounded-md px-3 py-2 text-sm font-medium",
-                  isActive(l.href) ? "bg-sky-500/20 text-sky-300" : "text-slate-300 hover:bg-white/5"
+                  "rounded-xl px-3 py-2 text-sm font-medium",
+                  isActive(l.href) ? "bg-[#eff6ff] text-[#2563eb]" : "text-[#334155] hover:bg-[#f1f5f9]"
                 )}
               >
                 {l.label}
@@ -118,6 +141,30 @@ export function TopNav() {
   );
 }
 
+function IconButton({
+  children,
+  title,
+  active,
+}: {
+  children: React.ReactNode;
+  title: string;
+  active?: boolean;
+}) {
+  return (
+    <button
+      title={title}
+      className={clsx(
+        "hidden h-9 w-9 items-center justify-center rounded-xl border transition-colors sm:flex",
+        active
+          ? "border-[#111827] bg-[#111827] text-white"
+          : "border-[#e5e7eb] bg-white text-[#64748b] hover:bg-[#f1f5f9]"
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
 function UserMenu() {
   const [open, setOpen] = useState(false);
   const roles = ["관리자", "품질팀", "생산팀", "조회 사용자"];
@@ -127,24 +174,26 @@ function UserMenu() {
       <button
         onClick={() => setOpen((v) => !v)}
         onBlur={() => setTimeout(() => setOpen(false), 150)}
-        className="flex items-center gap-1.5 rounded-full border border-slate-700 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-slate-200 hover:bg-white/10"
+        className="flex items-center gap-2 rounded-2xl border border-[#e5e7eb] bg-white py-1 pl-1 pr-2.5 text-xs font-medium text-[#334155] hover:bg-[#f8fafc]"
       >
-        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-sky-500 text-[10px] text-white">
+        <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#2563eb] text-[11px] font-bold text-white">
           {role[0]}
         </span>
-        <span className="hidden sm:inline">{role}</span>
+        <span className="hidden text-left leading-tight sm:block">
+          <span className="block text-[13px] font-semibold text-[#111827]">{role}</span>
+        </span>
         <ChevronDown size={12} />
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-40 rounded-lg border border-slate-700 bg-[#0f2244] py-1 shadow-xl">
-          <div className="px-3 py-1 text-[10px] text-slate-400">권한 미리보기 (예시)</div>
+        <div className="absolute right-0 top-full mt-1.5 w-40 rounded-xl border border-[#e5e7eb] bg-white py-1 shadow-lg">
+          <div className="px-3 py-1 text-[10px] text-[#94a3b8]">권한 미리보기 (예시)</div>
           {roles.map((r) => (
             <button
               key={r}
               onClick={() => setRole(r)}
               className={clsx(
-                "block w-full px-3 py-1.5 text-left text-sm hover:bg-white/5",
-                r === role ? "text-sky-300" : "text-slate-200"
+                "block w-full px-3 py-1.5 text-left text-sm hover:bg-[#f1f5f9]",
+                r === role ? "font-semibold text-[#2563eb]" : "text-[#334155]"
               )}
             >
               {r}

@@ -47,32 +47,32 @@ export function TravelerList({
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-[#101c33] p-3">
-        <div className="flex flex-1 min-w-[180px] items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2 py-1.5">
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[#e5e7eb] bg-white p-3">
+        <div className="flex flex-1 min-w-[180px] items-center gap-1.5 rounded-lg border border-[#e5e7eb] bg-slate-50 px-2 py-1.5">
           <Search size={14} className="text-slate-500" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="트레블러 번호·제품명·파일명 검색"
-            className="w-full bg-transparent text-xs text-slate-200 placeholder:text-slate-500 outline-none"
+            className="w-full bg-transparent text-xs text-slate-700 placeholder:text-slate-500 outline-none"
           />
         </div>
-        <select value={customerFilter} onChange={(e) => setCustomerFilter(e.target.value)} className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-xs text-slate-200">
+        <select value={customerFilter} onChange={(e) => setCustomerFilter(e.target.value)} className="rounded-lg border border-[#e5e7eb] bg-slate-50 px-2 py-1.5 text-xs text-slate-700">
           <option value="all">전체 고객사</option>
           <option value="현대">현대</option>
           <option value="OEM">OEM</option>
           <option value="미분류">미분류</option>
         </select>
-        <select value={includedFilter} onChange={(e) => setIncludedFilter(e.target.value)} className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-xs text-slate-200">
+        <select value={includedFilter} onChange={(e) => setIncludedFilter(e.target.value)} className="rounded-lg border border-[#e5e7eb] bg-slate-50 px-2 py-1.5 text-xs text-slate-700">
           <option value="all">분석포함 전체</option>
           <option value="included">분석대상 포함</option>
           <option value="excluded">분석대상 제외</option>
         </select>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-white/10 bg-[#101c33]">
+      <div className="overflow-x-auto rounded-xl border border-[#e5e7eb] bg-white">
         <table className="w-full min-w-[1000px] text-xs">
-          <thead className="bg-white/5 text-slate-400">
+          <thead className="bg-slate-50 text-slate-400">
             <tr>
               <Th></Th>
               <Th>파일명</Th>
@@ -86,7 +86,7 @@ export function TravelerList({
               <Th>분석포함</Th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-[#f1f5f9]">
             {filtered.length === 0 && (
               <tr>
                 <td colSpan={10} className="px-3 py-8 text-center text-slate-500">
@@ -102,10 +102,10 @@ export function TravelerList({
                       {expandedId === t.id ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     </button>
                   </td>
-                  <td className="max-w-[160px] truncate px-3 py-2 text-slate-300" title={t.fileName}>
+                  <td className="max-w-[160px] truncate px-3 py-2 text-slate-600" title={t.fileName}>
                     {t.fileName}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2 font-medium text-slate-200">
+                  <td className="whitespace-nowrap px-3 py-2 font-medium text-slate-700">
                     {t.travelerNo || <span className="text-slate-500">입력 필요</span>}
                     {duplicateNos.has(t.travelerNo) && t.travelerNo && (
                       <>
@@ -120,23 +120,23 @@ export function TravelerList({
                       </>
                     )}
                     {t.mergedFileIds && t.mergedFileIds.length > 0 && (
-                      <span className="ml-1 inline-flex items-center gap-0.5 rounded bg-white/10 px-1 text-[10px] text-slate-300">
+                      <span className="ml-1 inline-flex items-center gap-0.5 rounded bg-slate-100 px-1 text-[10px] text-slate-600">
                         <Combine size={9} /> 병합됨
                       </span>
                     )}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2 text-slate-300">{t.productName || "-"}</td>
+                  <td className="whitespace-nowrap px-3 py-2 text-slate-600">{t.productName || "-"}</td>
                   <td className="whitespace-nowrap px-3 py-2">
                     <span className={"rounded-full border px-2 py-0.5 text-[11px] font-semibold " + CUSTOMER_BADGE[t.customer]}>
                       {t.customer}
                     </span>
                     {t.customerManuallySet && <span className="ml-1 text-[10px] text-slate-500">(수동)</span>}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2 text-slate-300">{t.material || "-"}</td>
-                  <td className="whitespace-nowrap px-3 py-2 text-slate-300">
+                  <td className="whitespace-nowrap px-3 py-2 text-slate-600">{t.material || "-"}</td>
+                  <td className="whitespace-nowrap px-3 py-2 text-slate-600">
                     {t.quantityMin != null ? `${t.quantityMin}${t.quantityMax && t.quantityMax !== t.quantityMin ? `~${t.quantityMax}` : ""}` : "확인 필요"}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-2 text-slate-300">
+                  <td className="whitespace-nowrap px-3 py-2 text-slate-600">
                     {t.startDate ?? "확인 필요"} ~ {t.endDate ?? "확인 필요"}
                   </td>
                   <td className="whitespace-nowrap px-3 py-2">
@@ -154,7 +154,7 @@ export function TravelerList({
                 </tr>
                 {expandedId === t.id && (
                   <tr>
-                    <td colSpan={10} className="bg-white/5 px-4 py-3">
+                    <td colSpan={10} className="bg-slate-50 px-4 py-3">
                       <EditRow traveler={t} onUpdate={onUpdate} />
                     </td>
                   </tr>
@@ -242,7 +242,7 @@ function EditRow({ traveler, onUpdate }: { traveler: Traveler; onUpdate: (id: st
       </EditField>
 
       <div className="col-span-2 flex items-end gap-2 sm:col-span-4">
-        <button onClick={save} className="rounded-lg border border-white/15 bg-[#101c33] px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-white/5">
+        <button onClick={save} className="rounded-lg border border-[#e5e7eb] bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">
           변경사항 저장
         </button>
         <button onClick={markVerified} className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700">

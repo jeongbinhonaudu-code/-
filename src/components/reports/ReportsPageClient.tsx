@@ -79,14 +79,14 @@ export function ReportsPageClient() {
 
   return (
     <div className="mx-auto max-w-[1000px] px-3 py-4 sm:px-4 sm:py-6">
-      <h1 className="text-xl font-bold text-slate-100">보고서</h1>
+      <h1 className="text-xl font-bold text-[#111827]">보고서</h1>
       <p className="mt-1 text-sm text-slate-400">현재 데이터를 CSV로 내보내거나 화면을 인쇄(PDF 저장)할 수 있습니다.</p>
 
       <div className="mt-4 space-y-3">
         {cards.map((c) => (
-          <div key={c.title} className="flex items-center justify-between rounded-xl border border-white/10 bg-[#101c33] p-4">
+          <div key={c.title} className="flex items-center justify-between rounded-xl border border-[#e5e7eb] bg-white p-4">
             <div>
-              <p className="text-sm font-bold text-slate-200">{c.title}</p>
+              <p className="text-sm font-bold text-slate-700">{c.title}</p>
               <p className="text-xs text-slate-400">{c.desc}</p>
             </div>
             <button
@@ -98,14 +98,14 @@ export function ReportsPageClient() {
           </div>
         ))}
 
-        <div className="flex items-center justify-between rounded-xl border border-white/10 bg-[#101c33] p-4">
+        <div className="flex items-center justify-between rounded-xl border border-[#e5e7eb] bg-white p-4">
           <div>
-            <p className="text-sm font-bold text-slate-200">현재 화면 인쇄 / PDF 저장</p>
+            <p className="text-sm font-bold text-slate-700">현재 화면 인쇄 / PDF 저장</p>
             <p className="text-xs text-slate-400">브라우저 인쇄 기능으로 PDF 저장이 가능합니다.</p>
           </div>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-[#101c33] px-3 py-2 text-xs font-bold text-slate-400 hover:bg-white/5"
+            className="flex items-center gap-1.5 rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-xs font-bold text-slate-400 hover:bg-slate-50"
           >
             <Printer size={14} /> 인쇄
           </button>

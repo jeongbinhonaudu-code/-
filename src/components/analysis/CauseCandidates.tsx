@@ -22,9 +22,9 @@ const REQUIRED_DATA = [
 export function CauseCandidates() {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-      <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
+      <div className="rounded-xl border border-[#e5e7eb] bg-white p-4">
         <div className="mb-1 flex items-center gap-2">
-          <h2 className="text-sm font-bold text-slate-200">원인 후보 (확인 필요)</h2>
+          <h2 className="text-sm font-bold text-slate-700">원인 후보 (확인 필요)</h2>
           <DataBadge reliability="missing" />
         </div>
         <p className="mb-2 text-[11px] text-slate-400">
@@ -37,9 +37,9 @@ export function CauseCandidates() {
           ))}
         </ul>
       </div>
-      <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
+      <div className="rounded-xl border border-[#e5e7eb] bg-white p-4">
         <div className="mb-1 flex items-center gap-2">
-          <h2 className="text-sm font-bold text-slate-200">추가 필요자료</h2>
+          <h2 className="text-sm font-bold text-slate-700">추가 필요자료</h2>
           <DataBadge reliability="missing" />
         </div>
         <p className="mb-2 text-[11px] text-slate-400">아래 자료가 확보되면 추정값을 실제 확정값으로 교체할 수 있습니다.</p>

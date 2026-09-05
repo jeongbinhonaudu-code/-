@@ -69,7 +69,7 @@ export function TravelerPageClient() {
 
   return (
     <div className="mx-auto max-w-[1400px] px-3 py-4 sm:px-4 sm:py-6">
-      <h1 className="text-xl font-bold text-slate-100">트레블러 PDF 관리</h1>
+      <h1 className="text-xl font-bold text-[#111827]">트레블러 PDF 관리</h1>
       <p className="mt-1 text-sm text-slate-400">
         트레블러 PDF를 업로드·관리하고 고객사를 자동분류합니다. 동일 번호의 분할 PDF는 하나의 생산 건으로 취급해야 합니다.
       </p>
@@ -77,19 +77,19 @@ export function TravelerPageClient() {
       <div className="mt-4 space-y-4">
         <ArchiveSummary />
 
-        <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
+        <div className="rounded-xl border border-[#e5e7eb] bg-white p-4">
           <TravelerUpload onFiles={handleFiles} />
         </div>
 
-        <details className="rounded-xl border border-white/10 bg-[#101c33] p-4 text-xs text-slate-400">
-          <summary className="cursor-pointer text-sm font-bold text-slate-300">고객사 자동분류 규칙</summary>
+        <details className="rounded-xl border border-[#e5e7eb] bg-white p-4 text-xs text-slate-400">
+          <summary className="cursor-pointer text-sm font-bold text-slate-600">고객사 자동분류 규칙</summary>
           <ul className="mt-2 list-disc space-y-1 pl-4">
             {CLASSIFICATION_RULES_TEXT.map((r) => (
               <li key={r}>{r}</li>
             ))}
           </ul>
           <p className="mt-2">
-            테스트: <code className="rounded bg-white/5 px-1">classifyCustomer(&quot;H3240&quot;)</code> →{" "}
+            테스트: <code className="rounded bg-slate-50 px-1">classifyCustomer(&quot;H3240&quot;)</code> →{" "}
             <b>{classifyCustomer("H3240")}</b>
           </p>
         </details>

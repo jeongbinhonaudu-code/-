@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a1220;
-  --foreground: #e2e8f0;
+  --background: #f4f6f8;
+  --foreground: #111827;
 }
 
 @theme inline {
@@ -11,12 +11,12 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 /* 키보드 포커스 표시 (접근성 필수 요소) — 컴포넌트마다 개별 지정하지 않도록 전역으로 적용 */
 :focus-visible {
-  outline: 2px solid #38bdf8;
+  outline: 2px solid #2563eb;
   outline-offset: 2px;
   border-radius: 4px;
 }

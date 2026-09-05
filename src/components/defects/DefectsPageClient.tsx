@@ -16,7 +16,7 @@ export function DefectsPageClient() {
 
   return (
     <div className="mx-auto max-w-[1400px] px-3 py-4 sm:px-4 sm:py-6">
-      <h1 className="text-xl font-bold text-slate-100">불량·재작업</h1>
+      <h1 className="text-xl font-bold text-[#111827]">불량·재작업</h1>
       <p className="mt-1 text-sm text-slate-400">
         품질 순회점검에서 기록된 재확인·부적합 이력을 모아 보여줍니다. 설비가동 로그·재작업 시간 연동 등 상세 분석은 3단계
         구현 예정입니다.
@@ -26,9 +26,9 @@ export function DefectsPageClient() {
         <Stat label="전체 점검 건수" value={`${list.length}건`} />
         <Stat label="재확인 필요" value={`${recheckCount}건`} />
         <Stat label="부적합" value={`${nonconformingCount}건`} />
-        <div className="rounded-xl border border-white/10 bg-[#101c33] px-3 py-3">
+        <div className="rounded-xl border border-[#e5e7eb] bg-white px-3 py-3">
           <p className="text-[11px] text-slate-400">이상 발생률</p>
-          <p className="text-lg font-bold text-slate-100">{rate != null ? `${rate}%` : "확인 필요"}</p>
+          <p className="text-lg font-bold text-[#111827]">{rate != null ? `${rate}%` : "확인 필요"}</p>
           <DataBadge reliability={list.length < 20 ? "sample" : "confirmed"} className="mt-1" />
         </div>
       </div>
@@ -42,9 +42,9 @@ export function DefectsPageClient() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-[#101c33] px-3 py-3">
+    <div className="rounded-xl border border-[#e5e7eb] bg-white px-3 py-3">
       <p className="text-[11px] text-slate-400">{label}</p>
-      <p className="text-lg font-bold text-slate-100">{value}</p>
+      <p className="text-lg font-bold text-[#111827]">{value}</p>
     </div>
   );
 }

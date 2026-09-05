@@ -15,9 +15,9 @@ export function CustomerBreakdownChart({ travelers }: { travelers: Traveler[] })
     .map(([name, value]) => ({ name, value }));
 
   return (
-    <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
+    <div className="rounded-xl border border-[#e5e7eb] bg-white p-4">
       <div className="mb-1 flex items-center gap-2">
-        <h2 className="text-sm font-bold text-slate-200">고객사별 구성</h2>
+        <h2 className="text-sm font-bold text-slate-700">고객사별 구성</h2>
         <DataBadge reliability={travelers.some((t) => t.reliability === "sample") ? "sample" : "unverified"} />
       </div>
       <p className="mb-3 text-[11px] text-slate-400">현재 등록된 트레블러 {travelers.length}건 기준 (표본 {travelers.length}건)</p>
@@ -27,17 +27,17 @@ export function CustomerBreakdownChart({ travelers }: { travelers: Traveler[] })
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={75} label={{ fill: "#cbd5e1" }}>
+              <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={75} label={{ fill: "#334155" }}>
                 {data.map((d) => (
                   <Cell key={d.name} fill={CUSTOMER_COLORS[d.name] ?? "#94a3b8"} />
                 ))}
               </Pie>
               <Tooltip
-                contentStyle={{ background: "#101c33", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8 }}
-                labelStyle={{ color: "#e2e8f0" }}
-                itemStyle={{ color: "#e2e8f0" }}
+                contentStyle={{ background: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 8 }}
+                labelStyle={{ color: "#111827" }}
+                itemStyle={{ color: "#111827" }}
               />
-              <Legend wrapperStyle={{ color: "#cbd5e1" }} />
+              <Legend wrapperStyle={{ color: "#475569" }} />
             </PieChart>
           </ResponsiveContainer>
         </div>

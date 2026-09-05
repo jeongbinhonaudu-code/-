@@ -45,9 +45,9 @@ export function FactoryMap({ zones, fitViewport = false }: { zones: FactoryZone[
           <div
             key={sec.id}
             style={{ gridColumn: sec.gridColumn }}
-            className="flex items-center gap-1.5 truncate rounded-full border border-amber-400/30 bg-gradient-to-b from-[#15294f] to-[#0c1c3a] px-2.5 py-1 text-[9px] font-bold tracking-wide text-amber-200 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_6px_16px_-10px_rgba(251,191,36,0.4)] sm:text-[10px]"
+            className="flex items-center gap-1.5 truncate rounded-full border border-[#dbeafe] bg-white px-2.5 py-1 text-[9px] font-bold tracking-wide text-[#1e40af] shadow-[0_1px_2px_rgba(15,23,42,0.06)] sm:text-[10px]"
           >
-            <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-amber-300 to-amber-500 text-[8px] font-extrabold text-[#0c1c3a] shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
+            <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-[#2563eb] text-[8px] font-extrabold text-white">
               {sec.order}
             </span>
             <span className="truncate">{sec.label}</span>
@@ -56,22 +56,16 @@ export function FactoryMap({ zones, fitViewport = false }: { zones: FactoryZone[
       </div>
 
       <div
-        className="relative w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#0e2245] to-[#08111f] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.06)]"
+        className="relative w-full overflow-hidden rounded-2xl border border-[#e5e7eb] bg-[#fafbfc] shadow-[0_1px_3px_rgba(15,23,42,0.06)]"
         style={{ aspectRatio: `${GRID_COLS} / ${GRID_ROWS}` }}
       >
-        {/* 바닥 조명감: 상단 실내등, 구석 앰비언트 컬러, 미세한 그레인으로 "실내 바닥" 질감 */}
+        {/* 블루프린트 느낌의 옅은 격자선 — 실내 바닥 도면 질감 */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            background:
-              "radial-gradient(70% 45% at 50% 0%, rgba(186,230,253,0.09), transparent 60%), radial-gradient(55% 45% at 8% 100%, rgba(56,189,248,0.06), transparent 65%), radial-gradient(55% 45% at 95% 15%, rgba(251,191,36,0.05), transparent 65%), radial-gradient(120% 90% at 50% 100%, rgba(0,0,0,0.3), transparent 60%)",
-          }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
-          style={{
             backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+              "linear-gradient(to right, rgba(15,23,42,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(15,23,42,0.04) 1px, transparent 1px)",
+            backgroundSize: `${100 / GRID_COLS}% ${100 / GRID_ROWS}%`,
           }}
         />
 
@@ -104,28 +98,18 @@ export function FactoryMap({ zones, fitViewport = false }: { zones: FactoryZone[
         >
           <defs>
             <marker id="route-arrow" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto">
-              <path d="M0,0 L5,2.5 L0,5 Z" fill="#fbbf24" />
+              <path d="M0,0 L5,2.5 L0,5 Z" fill="#2563eb" />
             </marker>
             <marker id="route-turn" markerWidth="3" markerHeight="3" refX="1.5" refY="1.5">
-              <circle cx="1.5" cy="1.5" r="1.3" fill="#fde68a" stroke="#0c1c3a" strokeWidth="0.4" />
+              <circle cx="1.5" cy="1.5" r="1.3" fill="#60a5fa" stroke="#ffffff" strokeWidth="0.4" />
             </marker>
           </defs>
-          {/* 은은한 글로우 레이어 */}
-          <polyline
-            points={routePoints.map((p) => `${p.x},${p.y}`).join(" ")}
-            fill="none"
-            stroke="#fbbf24"
-            strokeOpacity="0.35"
-            strokeWidth="1.6"
-            strokeLinejoin="round"
-            vectorEffect="non-scaling-stroke"
-          />
           {/* 선명한 경로선 */}
           <polyline
             points={routePoints.map((p) => `${p.x},${p.y}`).join(" ")}
             fill="none"
-            stroke="#facc15"
-            strokeWidth="0.5"
+            stroke="#2563eb"
+            strokeWidth="0.45"
             strokeLinejoin="round"
             markerMid="url(#route-turn)"
             markerEnd="url(#route-arrow)"
@@ -135,15 +119,15 @@ export function FactoryMap({ zones, fitViewport = false }: { zones: FactoryZone[
           <polyline
             points={routePoints.map((p) => `${p.x},${p.y}`).join(" ")}
             fill="none"
-            stroke="#fef9c3"
-            strokeOpacity="0.85"
-            strokeWidth="0.4"
+            stroke="#bfdbfe"
+            strokeOpacity="0.9"
+            strokeWidth="0.35"
             strokeDasharray="1.2 3.4"
             strokeLinejoin="round"
             vectorEffect="non-scaling-stroke"
             className="route-flow"
           />
-          <circle cx={routePoints[0].x} cy={routePoints[0].y} r="1.1" fill="#22c55e" stroke="#0c1c3a" strokeWidth="0.4" />
+          <circle cx={routePoints[0].x} cy={routePoints[0].y} r="1.1" fill="#16a34a" stroke="#ffffff" strokeWidth="0.4" />
         </svg>
 
         {/* 연마라인 연결선 (반자동 원통연마 → CNC 원통연마 → CLG 센터리스) */}
@@ -155,13 +139,13 @@ export function FactoryMap({ zones, fitViewport = false }: { zones: FactoryZone[
           >
             <defs>
               <marker id="arrowhead" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto">
-                <path d="M0,0 L4,2 L0,4 Z" fill="#fbbf24" />
+                <path d="M0,0 L4,2 L0,4 Z" fill="#d97706" />
               </marker>
             </defs>
             <polyline
               points={grindingArrowPath.map((p) => `${p.x},${p.y - 0.3}`).join(" ")}
               fill="none"
-              stroke="#fbbf24"
+              stroke="#d97706"
               strokeWidth="0.35"
               strokeDasharray="1.4 1"
               markerEnd="url(#arrowhead)"
@@ -268,15 +252,15 @@ function ZoneCard({
       return (
         <div
           style={{ gridColumn: zone.gridColumn, gridRow: zone.gridRow }}
-          className="relative flex flex-col items-center overflow-hidden rounded-md border-x border-amber-400/30 bg-gradient-to-r from-amber-400/10 via-transparent to-amber-400/10 py-2"
+          className="relative flex flex-col items-center overflow-hidden rounded-md border-x border-dashed border-[#cbd5e1] bg-[#f1f5f9]/50 py-2"
         >
           <div className="flex h-full flex-col items-center justify-evenly">
             {Array.from({ length: 6 }).map((_, i) => (
-              <ChevronDown key={i} size={11} className="shrink-0 text-amber-300/40" />
+              <ChevronDown key={i} size={11} className="shrink-0 text-slate-400" />
             ))}
           </div>
           {signage && (
-            <span className="pointer-events-none absolute left-1/2 top-2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#0c1c3a]/90 px-1.5 py-0.5 text-[8px] font-semibold text-amber-200 [writing-mode:vertical-rl]">
+            <span className="pointer-events-none absolute left-1/2 top-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#e5e7eb] bg-white/95 px-1.5 py-0.5 text-[8px] font-semibold text-[#2563eb] [writing-mode:vertical-rl]">
               다음: {signage.next}
             </span>
           )}
@@ -287,15 +271,15 @@ function ZoneCard({
     return (
       <div
         style={{ gridColumn: zone.gridColumn, gridRow: zone.gridRow }}
-        className="relative flex items-center gap-1 overflow-hidden rounded-md border-y border-amber-400/30 bg-gradient-to-b from-amber-400/10 via-transparent to-amber-400/10"
+        className="relative flex items-center gap-1 overflow-hidden rounded-md border-y border-dashed border-[#cbd5e1] bg-[#f1f5f9]/50"
       >
         <div className="flex w-full items-center justify-evenly">
           {Array.from({ length: 10 }).map((_, i) => (
-            <ChevronDown key={i} size={11} className="shrink-0 text-amber-300/40" />
+            <ChevronDown key={i} size={11} className="shrink-0 text-slate-400" />
           ))}
         </div>
         {signage && (
-          <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#0c1c3a]/90 px-2 py-0.5 text-[8px] font-semibold text-amber-200 sm:text-[9px]">
+          <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-[#e5e7eb] bg-white/95 px-2 py-0.5 text-[8px] font-semibold text-[#2563eb] sm:text-[9px]">
             다음: {signage.next} ↓
           </span>
         )}
@@ -307,10 +291,10 @@ function ZoneCard({
     return (
       <div
         style={{ gridColumn: zone.gridColumn, gridRow: zone.gridRow }}
-        className="relative flex flex-col items-center justify-center gap-1 rounded-md border-x border-amber-400/40 bg-amber-400/5"
+        className="relative flex flex-col items-center justify-center gap-1 rounded-md border-x border-dashed border-[#93c5fd] bg-[#eff6ff]/60"
       >
-        <ArrowUpDown size={14} className="text-amber-300/80" />
-        <span className="rotate-90 whitespace-nowrap text-[9px] font-semibold tracking-wide text-amber-200/70 sm:rotate-0">
+        <ArrowUpDown size={14} className="text-[#2563eb]" />
+        <span className="rotate-90 whitespace-nowrap text-[9px] font-semibold tracking-wide text-[#1e40af]/80 sm:rotate-0">
           {zone.name}
         </span>
       </div>
@@ -326,7 +310,7 @@ function ZoneCard({
       onClick={onSelect}
       style={{ gridColumn: zone.gridColumn, gridRow: zone.gridRow }}
       className={clsx(
-        "group relative flex flex-col justify-between overflow-hidden rounded-md border p-1.5 pl-2.5 text-left backdrop-blur-[2px] transition-all hover:-translate-y-0.5 hover:bg-white/[0.06] sm:p-2 sm:pl-3",
+        "group relative flex flex-col justify-between overflow-hidden rounded-md border p-1.5 pl-2.5 text-left transition-all hover:-translate-y-0.5 hover:shadow-md sm:p-2 sm:pl-3",
         statusStyle.bg,
         statusStyle.border,
         statusStyle.glow,
@@ -335,29 +319,29 @@ function ZoneCard({
     >
       <span className={clsx("absolute inset-y-0 left-0 w-1", style.accent)} />
       <div className="flex items-start justify-between gap-1">
-        <span className="flex items-start gap-1 text-[10px] font-bold leading-tight text-white sm:text-[11px]">
-          {Icon && <Icon size={11} className="mt-[1px] shrink-0 text-white/50" />}
+        <span className="flex items-start gap-1 text-[10px] font-bold leading-tight text-[#111827] sm:text-[11px]">
+          {Icon && <Icon size={11} className="mt-[1px] shrink-0 text-slate-400" />}
           {zone.name}
         </span>
         <div className="flex shrink-0 items-center gap-1">
           {zone.needsVerification && (
-            <HelpCircle size={11} className="text-yellow-400" aria-label="확인 필요" />
+            <HelpCircle size={11} className="text-amber-500" aria-label="확인 필요" />
           )}
           <StatusDot status={status} />
         </div>
       </div>
       {equipment.length > 0 && (
-        <span className="hidden text-[10px] text-slate-300 sm:block">{equipment.length}개 설비</span>
+        <span className="hidden text-[10px] text-slate-500 sm:block">{equipment.length}개 설비</span>
       )}
 
       {/* 호버 미리보기 (터치기기는 클릭으로 동일 정보 확인) */}
-      <div className="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-56 -translate-x-1/2 rounded-lg border border-slate-700 bg-[#0f2244] p-3 text-left opacity-0 shadow-2xl transition-opacity group-hover:opacity-100 lg:block">
-        <p className="text-sm font-bold text-white">{zone.name}</p>
-        <p className="mt-0.5 flex items-center gap-1 text-[11px] text-slate-400">
+      <div className="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-56 -translate-x-1/2 rounded-lg border border-[#e5e7eb] bg-white p-3 text-left opacity-0 shadow-xl transition-opacity group-hover:opacity-100 lg:block">
+        <p className="text-sm font-bold text-[#111827]">{zone.name}</p>
+        <p className="mt-0.5 flex items-center gap-1 text-[11px] text-slate-500">
           <Camera size={12} /> 대표사진: 등록 예정
         </p>
         {equipment[0] && (
-          <div className="mt-1.5 space-y-0.5 text-[11px] text-slate-300">
+          <div className="mt-1.5 space-y-0.5 text-[11px] text-slate-600">
             <p>현재 제품: {equipment[0].currentProduct ?? "확인 필요"}</p>
             <p>작업 수량: {equipment[0].currentQuantity ?? "확인 필요"}</p>
             <p>최근 품질결과: {QUALITY_RESULT_LABEL[equipment[0].lastQualityResult ?? "unchecked"].text}</p>
@@ -394,12 +378,12 @@ function ClusterCard({
     <div
       style={{ gridColumn: cluster.gridColumn, gridRow: cluster.gridRow }}
       className={clsx(
-        "relative flex flex-col rounded-lg border border-sky-400/15 bg-[#0e1c38]/50 p-2 shadow-[0_1px_0_rgba(255,255,255,0.05)_inset,0_10px_24px_-18px_rgba(0,0,0,0.6)] backdrop-blur-[2px]",
+        "relative flex flex-col rounded-lg border border-[#e5e7eb] bg-slate-50 p-2 shadow-[0_1px_2px_rgba(15,23,42,0.04)]",
         hasProblem && "ring-2 ring-red-500"
       )}
     >
-      <p className="mb-1.5 flex items-center gap-1 text-[9px] font-bold uppercase tracking-wide text-slate-400 sm:text-[10px]">
-        {HeaderIcon && <HeaderIcon size={10} className="text-slate-500" />} {cluster.name}
+      <p className="mb-1.5 flex items-center gap-1 text-[9px] font-bold uppercase tracking-wide text-slate-500 sm:text-[10px]">
+        {HeaderIcon && <HeaderIcon size={10} className="text-slate-400" />} {cluster.name}
       </p>
       <div className="grid flex-1 grid-cols-5 gap-1 sm:gap-1.5">
         {members.map((z) => {
@@ -410,13 +394,13 @@ function ClusterCard({
               key={z.id}
               onClick={() => onSelect(z.id)}
               className={clsx(
-                "flex flex-col items-center justify-center gap-0.5 truncate rounded-md border px-1 py-1.5 text-center shadow-[0_1px_0_rgba(255,255,255,0.06)_inset] transition-transform hover:-translate-y-0.5 hover:bg-white/[0.06]",
+                "flex flex-col items-center justify-center gap-0.5 truncate rounded-md border px-1 py-1.5 text-center transition-transform hover:-translate-y-0.5 hover:shadow-sm",
                 statusStyle.bg,
                 statusStyle.border,
                 status === "nonconforming" && "ring-1 ring-red-500"
               )}
             >
-              <span className="truncate text-[8px] font-bold leading-tight text-white sm:text-[9px]">{z.name}</span>
+              <span className="truncate text-[8px] font-bold leading-tight text-[#111827] sm:text-[9px]">{z.name}</span>
               <StatusDot status={status} />
             </button>
           );
@@ -437,12 +421,12 @@ function MapLegend({ collapsible = false }: { collapsible?: boolean }) {
 
   const body = (
     <div className="space-y-2 text-xs">
-      <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-slate-300">
-        <Milestone size={12} className="shrink-0 text-amber-400" />
-        <span className="font-semibold text-amber-200">동선 순서</span>
+      <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-slate-600">
+        <Milestone size={12} className="shrink-0 text-[#2563eb]" />
+        <span className="font-semibold text-[#1e40af]">동선 순서</span>
         {ROUTE_ORDER.map((label, i) => (
           <span key={label} className="flex items-center gap-1.5">
-            {i > 0 && <span className="text-slate-500">→</span>}
+            {i > 0 && <span className="text-slate-400">→</span>}
             <span>
               {i + 1}.{label}
             </span>
@@ -451,26 +435,26 @@ function MapLegend({ collapsible = false }: { collapsible?: boolean }) {
       </p>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
         {items.map((it) => (
-          <span key={it.status} className="flex items-center gap-1.5 text-slate-300">
+          <span key={it.status} className="flex items-center gap-1.5 text-slate-600">
             <StatusDot status={it.status} /> {STATUS_LABEL[it.status].text}
           </span>
         ))}
-        <span className="flex items-center gap-1.5 text-slate-300">
+        <span className="flex items-center gap-1.5 text-slate-600">
           <span className="h-2.5 w-2.5 rounded-full ring-2 ring-red-500" /> 문제 설비 강조
         </span>
-        <span className="flex items-center gap-1 text-yellow-400">
+        <span className="flex items-center gap-1 text-amber-600">
           <HelpCircle size={12} /> 도면 판독 확인 필요
         </span>
-        <span className="flex items-center gap-1.5 text-amber-300">
-          <span className="h-0.5 w-4 rounded-full bg-amber-400" /> 이동 경로 (
+        <span className="flex items-center gap-1.5 text-[#2563eb]">
+          <span className="h-0.5 w-4 rounded-full bg-[#2563eb]" /> 이동 경로 (
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
           입구 → 화살표: 진행 방향)
         </span>
-        <span className="flex items-center gap-1 text-amber-400">
+        <span className="flex items-center gap-1 text-amber-600">
           <ArrowRight size={12} /> 연결 설비라인: 반자동 원통연마 → CNC 원통연마 → CLG 센터리스
         </span>
-        <span className="flex items-center gap-1.5 text-slate-400">
-          <span className="h-1.5 w-4 rounded-full border-b-2 border-dashed border-amber-400" /> 안전선·통로
+        <span className="flex items-center gap-1.5 text-slate-500">
+          <span className="h-1.5 w-4 rounded-full border-b-2 border-dashed border-slate-400" /> 안전선·통로
         </span>
       </div>
     </div>
@@ -478,8 +462,8 @@ function MapLegend({ collapsible = false }: { collapsible?: boolean }) {
 
   if (collapsible) {
     return (
-      <details className="mt-2 shrink-0 rounded-xl border border-white/10 bg-gradient-to-b from-[#132a4d] to-[#101c33] px-4 py-2 text-xs shadow-[0_1px_0_rgba(255,255,255,0.06)_inset]">
-        <summary className="cursor-pointer select-none font-semibold text-amber-200">
+      <details className="mt-2 shrink-0 rounded-xl border border-[#e5e7eb] bg-white px-4 py-2 text-xs shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+        <summary className="cursor-pointer select-none font-semibold text-[#1e40af]">
           범례·동선 안내 보기
         </summary>
         <div className="mt-2">{body}</div>
@@ -488,7 +472,7 @@ function MapLegend({ collapsible = false }: { collapsible?: boolean }) {
   }
 
   return (
-    <div className="mt-3 rounded-xl border border-white/10 bg-gradient-to-b from-[#132a4d] to-[#101c33] px-4 py-2.5 shadow-[0_1px_0_rgba(255,255,255,0.06)_inset]">
+    <div className="mt-3 rounded-xl border border-[#e5e7eb] bg-white px-4 py-2.5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
       {body}
     </div>
   );

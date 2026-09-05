@@ -21,9 +21,9 @@ export function ProductMaterialChart({ travelers }: { travelers: Traveler[] }) {
   });
 
   return (
-    <div className="rounded-xl border border-white/10 bg-[#101c33] p-4">
+    <div className="rounded-xl border border-[#e5e7eb] bg-white p-4">
       <div className="mb-1 flex items-center gap-2">
-        <h2 className="text-sm font-bold text-slate-200">제품·재질별 구성</h2>
+        <h2 className="text-sm font-bold text-slate-700">제품·재질별 구성</h2>
         <DataBadge reliability="unverified" />
       </div>
       <p className="mb-3 text-[11px] text-slate-400">등록 트레블러 기준 제품 종류 {productCounts.size}종 · 재질 {materialCounts.size}종</p>
@@ -33,15 +33,15 @@ export function ProductMaterialChart({ travelers }: { travelers: Traveler[] }) {
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} layout="vertical" margin={{ left: 12, right: 12 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#243456" />
-              <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fill: "#94a3b8" }} />
-              <YAxis type="category" dataKey="name" width={90} tick={{ fontSize: 11, fill: "#94a3b8" }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fill: "#64748b" }} />
+              <YAxis type="category" dataKey="name" width={90} tick={{ fontSize: 11, fill: "#64748b" }} />
               <Tooltip
-                contentStyle={{ background: "#101c33", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8 }}
-                labelStyle={{ color: "#e2e8f0" }}
-                itemStyle={{ color: "#e2e8f0" }}
+                contentStyle={{ background: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 8 }}
+                labelStyle={{ color: "#111827" }}
+                itemStyle={{ color: "#111827" }}
               />
-              <Bar dataKey="count" fill="#0ea5e9" radius={[0, 6, 6, 0]} />
+              <Bar dataKey="count" fill="#2563eb" radius={[0, 6, 6, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
