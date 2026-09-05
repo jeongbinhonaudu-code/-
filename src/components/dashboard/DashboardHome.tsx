@@ -3,31 +3,32 @@
 import Link from "next/link";
 import { zones } from "@/data/zones";
 import { useEffectiveEquipment } from "@/lib/equipmentOverrides";
+import { usePersistedList } from "@/lib/storage";
+import { sampleQualityInspections } from "@/data/qualityInspections";
+import { QualityInspection } from "@/types";
 import { SummaryBar } from "@/components/layout/SummaryBar";
 import { FactoryMap } from "@/components/factory/FactoryMap";
 import { MonthlyProductionChart } from "@/components/analysis/MonthlyProductionChart";
 import { QualityGauge } from "@/components/dashboard/QualityGauge";
 import { ZoneProductionList } from "@/components/dashboard/ZoneProductionList";
-import { QualityAlertPanel } from "@/components/dashboard/QualityAlertPanel";
+import { QualityTypePanel } from "@/components/dashboard/QualityTypePanel";
+import { AlertSummaryCards } from "@/components/dashboard/AlertSummaryCards";
 import { RecentQualityChecks } from "@/components/dashboard/RecentQualityChecks";
 import { DataBadge } from "@/components/ui/DataBadge";
-import { Sparkles } from "lucide-react";
 
 export function DashboardHome() {
   const { equipment } = useEffectiveEquipment();
+  const { items: inspections } = usePersistedList<QualityInspection>("quality-inspections", sampleQualityInspections);
 
   const judged = equipment.filter((e) => e.lastQualityResult && e.lastQualityResult !== "unchecked");
   const passCount = judged.filter((e) => e.lastQualityResult === "ok").length;
   const passPct = judged.length > 0 ? (passCount / judged.length) * 100 : 0;
 
-  const totalQuantity = equipment.reduce((sum, e) => sum + (e.currentQuantity ?? 0), 0);
-
   return (
     <div className="mx-auto max-w-[1920px] px-4 py-6 sm:px-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-        <h1 className="flex items-center gap-2 text-3xl font-extrabold tracking-tight text-[#111827]">
-          <Sparkles className="text-[#2563eb]" size={26} />
-          공정·품질 통합 관제
+        <h1 className="text-4xl font-extrabold tracking-tight text-[#111827]">
+          <span className="mr-2 text-[#2563eb]">AI</span>공정·품질 통합 관제
         </h1>
         <div className="flex flex-wrap gap-2">
           <QuickLink href="/factory" label="공장 조감도" active />
@@ -58,12 +59,12 @@ export function DashboardHome() {
             <QualityGauge passPct={passPct} total={judged.length} />
             <div className="mt-3 grid grid-cols-2 gap-2 text-center text-xs">
               <div className="rounded-lg bg-slate-50 p-2">
-                <p className="text-slate-500">진행 수량 합계</p>
-                <p className="text-sm font-bold text-[#111827]">{totalQuantity.toLocaleString()}개</p>
-              </div>
-              <div className="rounded-lg bg-slate-50 p-2">
                 <p className="text-slate-500">판정 표본</p>
                 <p className="text-sm font-bold text-[#111827]">{judged.length}건</p>
+              </div>
+              <div className="rounded-lg bg-slate-50 p-2">
+                <p className="text-slate-500">합격 건수</p>
+                <p className="text-sm font-bold text-[#111827]">{passCount}건</p>
               </div>
             </div>
           </div>
@@ -77,12 +78,16 @@ export function DashboardHome() {
           <FactoryMap zones={zones} />
         </div>
 
-        {/* 우측: 품질 ALERT */}
-        <QualityAlertPanel equipment={equipment} zones={zones} />
+        {/* 우측: 검사종류별 발생 현황 */}
+        <QualityTypePanel inspections={inspections} />
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-[1fr_380px]">
         <MonthlyProductionChart />
+        <AlertSummaryCards equipment={equipment} />
+      </div>
+
+      <div className="mt-4">
         <RecentQualityChecks equipment={equipment} zones={zones} />
       </div>
     </div>
